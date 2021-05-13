@@ -19,7 +19,7 @@ function obtenerCabecera($rolUsuario){
     }
     return $cabecera;
 }
-/***********************Funciones auxiliares**************************/
+/***********************Funciones auxiliares***************************/
 function vMostrarHome($rolUsuario){
     $page = file_get_contents("./templates/default_template.html");
     $cabecera = obtenerCabecera($rolUsuario);
