@@ -1,0 +1,19 @@
+<link rel="stylesheet" href= "./css/formulario.css"/>
+<main>
+        <h1>Eliminar persona</h1>
+        <p>Usuario: ##idUsuario##</p>
+        <p>Nombre: ##nombre##</p>
+        <p>Primer Apellido: ##apellidos##</p>
+        <p>Correo: ##correo##</p>
+        <p>Fecha de Nacimiento: ##fechaNacimiento##</p>
+        <p>Telefono: ##telefono##</p>
+        <p>Contraseña: ##password##</p>
+
+	¿Desea eliminar el usuario?
+        <form action="./index.php?seccion=5&accion=mostrarPerfil&id=6" method="post">
+            <label for="id">
+                <input type="hidden" name="id" id="id" value="##oidUsuarios##" ><br></label>
+            <input type="submit" name="enviar" value="Si">
+        </form>
+    <button id="noEliminar"><a href="index.php?seccion=5&accion=mostrarPerfil&id=1">No</a></button>
+</main>

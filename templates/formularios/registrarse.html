@@ -1,0 +1,50 @@
+<link rel="stylesheet" href= "./css/formulario.css"/>
+   <main>
+        <form action="##registrar##" method="POST">
+            <div>
+                <label for="nombre">
+                    <input type="text" id="nombre" name="nombre" placeholder="Nombre"maxlength="32" minlength="1"required>
+                </label>
+            </div>
+            <div>
+                <label for="apellidos">
+                    <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos"maxlength="64" minlength="1" required>
+                </label>
+            </div>
+            <div>
+                <label for="usuario">
+                    <input type="text" id="usuario" name="usuario" placeholder="Nombre de usuario" maxlength="16" minlength="1" required>
+                </label>
+            </div>
+            <div>
+                <label for="fechaNacimiento">
+                    <input type="date" id="fechaNacimiento" name="fechaNacimiento" placeholder="Edad"required>
+                </label>
+            </div>
+            <div>
+                <label for="correo">
+                    <input type="email" id="correo" name="correo" placeholder="Correo electronico"required>
+                </label>
+            </div>
+            <div>
+                <label for="telefono">
+                    <input type="number" id="telefono" name="telefono" placeholder="Numero de telefono" required>
+                </label>
+            </div>
+            <div>
+                <label for="password">
+                    <input type="password" id="password" name="password" maxlength="32" minlength="1" placeholder="Contraseña"required>
+                </label>
+            </div>
+            <div>
+                <label for="password">
+                    <input type="password" id="confirm_password" name="confirmPassword" maxlength="32" minlength="1" placeholder="Repite la contraseña"required>
+                </label>
+            </div>
+
+            <label for="submit">
+                <input type="submit" name="botonSubmit" id="submit" value="Registrarse" >
+            </label>
+        </form>
+       <script src="./js/confirmarPassword.js"></script>
+    </main>

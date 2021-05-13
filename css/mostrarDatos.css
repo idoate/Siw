@@ -1,0 +1,34 @@
+body{
+    background-image: url(../img/fondoInicioSesion.jpeg);
+    background-size: cover;
+}
+body main {
+    padding: 50px;
+    background-color: white;
+    opacity: 90%;
+    width: fit-content;
+    height: fit-content;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid black;
+}
+
+body main p {
+    padding: 10px;
+    width: fit-content;
+    height: 30px;
+    margin-bottom: 8px;
+    border: 2px solid black;
+
+    opacity: 100%;
+    background-color: white;
+    text-indent: 4px;
+}
+
+body main button{
+    margin-top: 10px;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+}
