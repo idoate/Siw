@@ -24,6 +24,9 @@ body form label input{
     background-color: white;
     text-indent: 4px;
 }
+body form label .csv{
+    width: 400px;
+}
 
 body form label input#submit{
     margin-top: 10px;

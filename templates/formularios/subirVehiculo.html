@@ -1,0 +1,32 @@
+<link rel="stylesheet" href= "./css/formulario.css"/>
+<main>
+    <h2>Subir modelo del coche</h2>
+    <form action = "./index.php?seccion=6&accion=subirModelo&id=2" method = "POST" enctype="multipart/form-data" >
+        <label for="marca">Selecciona la marca del coche<br>
+            <select id="marca" name="marcaCoche">
+                <datalist id="dataListMarcaCoche">
+                    ##datalist##
+                </datalist>
+            </select>
+        </label><br>
+        <label for="modelo">Introduce el modelo del coche<br>
+            <input type="text" id="modelo" name="modeloCoche">
+        </label><br>
+        <label for="matricula">Introduce la matricula<br>
+            <input type="text" id="matricula" name="matriculaCoche">
+        </label><br>
+        <label for="descripcion">Introduce la descripcion del coche<br>
+            <textarea id="descripcion" name="descripcionCoche"> </textarea>
+        </label><br>
+
+        <label for="precio">Introduce el precio del coche<br>
+            <input type="number" id="precio" name="precioCoche">
+        </label><br>
+        <label for = "fotoPrincipalCoche">Introduce la foto principal del coche<br>
+           <input type="file"  id="fotoPrincipalCoche" name="fotoPrincipalCoche" accept="image/*">
+        </label><br>
+        <label for="submit">
+            <input type="submit" name="csv" id="submit" value= "Importar">
+        </label>
+    </form>
+</main>

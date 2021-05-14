@@ -9,7 +9,6 @@
             confirm_password.setCustomValidity('');
         }
     }
-
     password.onchange = validatePassword;
     confirm_password.onkeyup = validatePassword;
 

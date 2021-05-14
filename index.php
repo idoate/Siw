@@ -28,7 +28,7 @@ switch($seccion){
         vMostrarOfertas(mGetRol());
         break;
     case 3: // Seccion Modelos
-        vMostrarModelos(mGetRol());
+        vMostrarCatalogo(mCatalogoCoches(),mGetRol());
         break;
     case 4: // Seccion Servicios
         vMostrarServicios(mGetRol());
@@ -95,20 +95,6 @@ switch($seccion){
                     break;
             }
         }
-        elseif($accion === "mostrarUsuarios"){
-            switch ($id) {
-                case 1:
-                    # code...
-                    vMostrarListadoPersonas(mDatosTodasPersonas(),mSesionIniciada(),    mGetRol());
-                    break;
-                
-                default:
-                    # code...
-                    break;
-            }
-
-        }
-
         elseif ($accion === "altaUsuario"){
             switch ($id) {
                 case 1:
@@ -141,6 +127,28 @@ switch($seccion){
                     vMostrarResultadoBorrarAdministrador(mBorrarAdministrador(),mGetRol());
                     break;
 
+            }
+        }
+        elseif($accion === "cargaMasivaUsuarios"){
+            switch ($id){
+                case 1:
+                    vMostrarCargaMasivaUsuarios(mSesionIniciada(),mGetRol());
+                    break;
+                case 2:
+                    vMostrarResultadoCargaMasivaUsuarios(mCargaMasivaUsuarios(),mGetRol());
+                    break;
+            }
+        }
+        elseif($accion === "subirModelo"){
+            switch ($id){
+                case 1:
+                    vMostrarSubirModeloCoche(mSesionIniciada(),mObtenerMarcasDeCoche(),mGetRol());
+                    break;
+                case 2:
+                    vMostrarResultadoSubirModeloCoche(mSubirCoche(),mGetRol());
+                    break;
+                case 3:
+                    break;
             }
         }
         break;

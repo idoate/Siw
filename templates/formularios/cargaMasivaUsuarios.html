@@ -1,0 +1,12 @@
+<link rel="stylesheet" href= "./css/formulario.css"/>
+<main>
+    <h2>Carga Masiva de Usuarios</h2>
+    <form action = "./index.php?seccion=6&accion=cargaMasivaUsuarios&id=2" method = "POST" enctype="multipart/form-data">
+        <label for="csvUsuarios">Importa o selecciona el CSV para la carga masiva de Usuarios
+            <input class="csv" type="file" id="csvUsuarios" name="csvUsuarios"  accept=".csv"><br>
+        </label>
+        <label for="submit">
+            <input type="submit" name="csv" id="submit" value= "Importar">
+        </label>
+    </form>
+</main>

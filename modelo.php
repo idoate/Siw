@@ -1,32 +1,20 @@
 <?php
-function comprobarDatosLoginValido($usuario):bool{
-    $allowed = array(".", "_");
-    if(!ctype_alnum(str_replace($allowed, '', $usuario["username"] ))) {
-        return false;
-    }
-
-    if(!preg_match('/^[a-zA-Z0-9]{5,}$/', $usuario["password"])) {
-        return false;
-    }
-    return true;
-}
-function comprobarRegistroValido($usuario):bool{
-    $allowed = array(".", "_");
-    if(!ctype_alnum(str_replace($allowed, '', $usuario["username"] ))) {
+function comprobarDatosValidos($usuario):bool
+{
+    $allowedUser = array(".", "_");
+    $allowedPassword = array(".", "_", " ");
+    if(!ctype_alnum(str_replace($allowedUser, '', $usuario["username"] ))) {
         echo("username");
         return false;
     }
-    if (!preg_match('/^[a-zA-Z0-9]{5,}$/', $usuario["password"])) {
+    if(!ctype_alnum(str_replace($allowedPassword, '', $usuario["password"] ))) {
         echo("password");
-        return false;
-    }
-    if (!filter_var($usuario["correo"], FILTER_VALIDATE_EMAIL)) {
-        echo("email");
         return false;
     }
     return true;
 }
-function datosRegistroUsuario(){
+function datosRegistroUsuario(): array
+{
     return $nuevoUsuario =["username" =>  $_POST["usuario"],
         "password" => $_POST["password"],
         "nombre"=> $_POST["nombre"],
@@ -35,14 +23,17 @@ function datosRegistroUsuario(){
         "fechaNacimiento"=>$_POST["fechaNacimiento"],
         "correo"=>$_POST["correo"]];
 }
-function datosInicioSesion(){
+function datosInicioSesion(): array
+{
     return $usuario = ["username" => $_POST["usernameCliente"],
         "password" =>$_POST["passwordCliente"]];
 }
-function mCreaConexionbd(){
+/******************************Funciones Auxiliaress********************/
+function mCreaConexionbd()
+{
     $db_host = 'localhost';
     $db_user = 'root';
-    $db_password = "";
+    $db_password = "root";
     $db_db = "db_grupo33";
     /*
     $db_host = "dbserver";
@@ -60,13 +51,15 @@ function mCreaConexionbd(){
         return $miConexion;
     }
 }
-function mGetRol(){
+function mGetRol(): string
+{
     if(!isset($_SESSION["rol"])){
         $_SESSION["rol"]= "anonimo";
     }
     return $_SESSION["rol"];
 }
-function mSesionIniciada(){
+function mSesionIniciada(): int
+{
     $miConexion = mCreaConexionbd();
     if (isset($_SESSION["idUsuario"])) {
         $idUsuario = $_SESSION["idUsuario"];
@@ -95,9 +88,10 @@ function mSesionIniciada(){
     }
 return-1;
 }
-function mConectarUsuario(){
+function mConectarUsuario(): int
+{
     $usuario = datosInicioSesion();
-    if(comprobarDatosLoginValido($usuario)) {
+    if(comprobarDatosValidos($usuario)) {
         $miConexion = mCreaConexionbd();
         $consulta = "SELECT id, idUsuario, contrasena, rol  FROM final_usuario WHERE idUsuario = '".$usuario["username"]."'";
         if (!$miConexion->query($consulta)){
@@ -125,9 +119,10 @@ function mConectarUsuario(){
         return -1;//fallo alfanumerico
     }
 }
-function mRegistrarse(){
+function mRegistrarse(): int
+{
     $nuevoUsuario = datosRegistroUsuario();
-    if (comprobarRegistroValido($nuevoUsuario)) {
+    if (comprobarDatosValidos($nuevoUsuario)) {
         $miConexion = mCreaConexionbd();
         $sql = $miConexion->query("SELECT idUsuario  FROM final_usuario WHERE idUsuario = '" . $nuevoUsuario["username"] . "'");
         $userData = mysqli_fetch_object($sql);
@@ -149,10 +144,13 @@ function mRegistrarse(){
         return -3;//datos incorrectos
     }
 }
-function mCerrarSesion(){
+function mCerrarSesion()
+{
     session_unset ();
 }
-function mModificarPerfil(){
+/*****************************Funciones de Sesion**********************/
+function mModificarPerfil(): int
+{
     $miconexion = mCreaConexionbd();
     $usuario = datosRegistroUsuario();
     $id = $_POST["id"];
@@ -170,7 +168,8 @@ function mModificarPerfil(){
         return -1;
     }
 }
-function mEliminarPerfil(){
+function mEliminarPerfil():int
+{
     $miconexion = mCreaConexionbd();
     $id = $_POST["id"];
     $consulta = "DELETE FROM final_usuario WHERE '$id' = id ";
@@ -182,7 +181,8 @@ function mEliminarPerfil(){
         return -1;
     }
 }
-function mDatosUnaPersona(){
+function mDatosUnaPersona()
+{
     $miconexion = mCreaConexionbd();
     $id = $_SESSION["id"];
     $consulta = "select * from final_usuario where id = '$id'";
@@ -194,7 +194,9 @@ function mDatosUnaPersona(){
         return -1;
     }
 }
-function mSeleccionarUsuario(){
+/*******************************Funciones de Usuario*******************/
+function mSeleccionarUsuario()
+{
     $usuario = $_POST["usernameCliente"];
     $miConexion = mCreaConexionbd();
     $consulta = "SELECT id, idUsuario, rol  FROM final_usuario WHERE idUsuario = '".$usuario."'";
@@ -216,7 +218,8 @@ function mSeleccionarUsuario(){
         }
     }
 }
-function mHacerAdministrador(){
+function mHacerAdministrador(): int
+{
     if(mSesionIniciada()&&$_SESSION["rol"]==="admin"){
         $miconexion = mCreaConexionbd();
         $id = $_GET["oidUsuario"];
@@ -234,20 +237,10 @@ function mHacerAdministrador(){
     else{
         return -1;
     }
-}
-function mDatosTodasPersonas(){
-    $miconexion = mCreaConexionbd();
-    $id = $_SESSION["id"];
-    $consulta = "select * from final_usuario where rol = 'user'";
 
-    if($resultado = $miconexion->query($consulta)){
-        return $resultado;
-
-    }else{
-        return -1;
-    }
 }
-function mBorrarAdministrador(){
+function mBorrarAdministrador(): int
+{
     if(mSesionIniciada() && $_SESSION["rol"]==="admin"){
         $miconexion = mCreaConexionbd();
         $id = $_GET["oidUsuario"];
@@ -265,9 +258,82 @@ function mBorrarAdministrador(){
 
 
 }
+function mCargaMasivaUsuarios(): int
+{
+    if(mGetRol() === "admin"){
+        $miConexion  = mCreaConexionbd();
+        if (isset($_POST["csv"])){
+            $fileTmpName = $_FILES["csvUsuarios"]["tmp_name"];
+            $file = fopen($fileTmpName,'r');
+            while(($linea = fgetcsv($file,1000))!== false) {
+                $idUsuario = $linea[0];
+                $nombre = $linea[1];
+                $apellidos = $linea[2];
+                $correo = $linea[3];
+                $fechaNacimiento = $linea[4];
+                $telefono = $linea[5];
+                $contrasena = $linea[6];
+                $rol = $linea[7];
+                $consulta = "insert into final_usuario (idUsuario, nombre, apellidos, correo, fechaNacimiento, telefono, contrasena, rol)
+                         values ('$idUsuario', '$nombre', '$apellidos', '$correo', '$fechaNacimiento', '$telefono', '$contrasena', '$rol')";
+                if (!$miConexion->query($consulta)) {//consulta incorrecta
+                    fclose($file);
+                    return -1;// ha habido un fallo leyendo el csv o  en la base de datos
+                }
+            }
+            fclose($file);
+            return 1;
+        }
+        return -2;// ha habido un fallo obteniendo  el csv
+    }
+    return -3; //no tienes permisos para hacer eso
+}
+function mObtenerMarcasDeCoche()
+{
+    $miConexion = mCreaConexionbd();
+    $consulta = "SELECT marca FROM final_marca_coche";
+    if ($resultado = $miConexion->query($consulta)){
+        $datos = $miConexion->query($consulta);
+        return $datos;
+    }
 
+}
+function mSubirCoche():int
+{
+    $miConexion = mCreaConexionbd();
+    $idPropietario = $_SESSION["idUsuario"];
+    $marcaCoche = $_POST["marcaCoche"];
+    $modeloCoche = $_POST["modeloCoche"];
+    $matriculaCoche = $_POST["matriculaCoche"];
+    $descripcionCoche = $_POST["descripcionCoche"];
+    $precioCoche = $_POST["precioCoche"];
+    $fileTmpPath = $_FILES['fotoPrincipalCoche']['tmp_name'];
+    $fileName = $_FILES['fotoPrincipalCoche']['name'];
+    $extension = pathinfo($fileName,PATHINFO_EXTENSION);
+    $fotoPrincipal = uniqid().".".$extension;
+    if(!move_uploaded_file($fileTmpPath,"./uploadImages/".$fotoPrincipal)){
+        return -2;
+    }
+    else{
+        $consulta = "INSERT INTO final_vehiculo(matricula,idPropietario,marca,modelo,foto,precio,descripcion) 
+                      VALUES('$matriculaCoche','$idPropietario','$marcaCoche','$modeloCoche','$fotoPrincipal','$precioCoche','$descripcionCoche')";
+    }
+    if($resultado = $miConexion->query($consulta)){
+        return 1;
+    }
+    echo $consulta;
+    return -1;
+}
+function mCatalogoCoches()
+{
+    $miConexion = mCreaConexionbd();
+    $consulta = "SELECT * FROM final_vehiculo ";
+    if ($resultado = $miConexion->query($consulta)){
+        $datos = $miConexion->query($consulta);
+        return $datos;
+    }
+    return -1;
 
-
-
-
+}
+/*******************************Funciones de Administrador**************/
 
