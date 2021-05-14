@@ -1,4 +1,5 @@
 <?php
+/***********************Funnciones Auxiliares***************************/
 function aniadirPlantilla($seccion, $urlPlantilla,$nombreEtiqueta):string{
     $plantilla = file_get_contents($urlPlantilla);
     return (str_replace($nombreEtiqueta,$plantilla,$seccion));
@@ -19,7 +20,8 @@ function obtenerCabecera($rolUsuario){
     }
     return $cabecera;
 }
-/***********************Funciones auxiliares***************************/
+
+/***********************Mostrar Secciones Generales***************************/
 function vMostrarHome($rolUsuario){
     $page = file_get_contents("./templates/default_template.html");
     $cabecera = obtenerCabecera($rolUsuario);
@@ -31,46 +33,45 @@ function vMostrarHome($rolUsuario){
 }
 function vMostrarOfertas($rolUsuario){
     $page = file_get_contents("./templates/default_template.html");
-    $cabecera = obtenerCabecera($rolUsuario);
-    $seccion = file_get_contents("./templates/secciones/ofertas.html");
-    $slices = explode("##CONTENT##", $page);
-    $page = $slices[0] .$cabecera .$seccion.$slices[1];
     $page = str_replace("##TITLE##","Ofertas",$page);
+    $cabecera = obtenerCabecera($rolUsuario);
+    $slices = explode("##CONTENT##", $page);
+    $seccion = file_get_contents("./templates/secciones/ofertas.html");
+    $page = $slices[0] .$cabecera .$seccion.$slices[1];
     echo($page);
 }
 function vMostrarModelos($rolUsuario){
     $page = file_get_contents("./templates/default_template.html");
-    $cabecera = obtenerCabecera($rolUsuario);
-    $seccion = file_get_contents("./templates/secciones/modelos.html");
-    $slices = explode("##CONTENT##", $page);
-    $page = $slices[0] .$cabecera .$seccion.$slices[1];
     $page = str_replace("##TITLE##","Modelos",$page);
+    $cabecera = obtenerCabecera($rolUsuario);
+    $slices = explode("##CONTENT##", $page);
+  	$seccion = file_get_contents("./templates/secciones/modelos.html");
+    $page = $slices[0] .$cabecera .$seccion.$slices[1];
     echo($page);
 }
 function vMostrarServicios($rolUsuario){
     $page = file_get_contents("./templates/default_template.html");
-    $cabecera = obtenerCabecera($rolUsuario);
-    $seccion = file_get_contents("./templates/secciones/servicios.html");
-    $slices = explode("##CONTENT##", $page);
-    $page = $slices[0] .$cabecera .$seccion.$slices[1];
     $page = str_replace("##TITLE##","Servicios",$page);
+    $cabecera = obtenerCabecera($rolUsuario);
+    $slices = explode("##CONTENT##", $page);
+    $seccion = file_get_contents("./templates/secciones/servicios.html");
+    $page = $slices[0] .$cabecera .$seccion.$slices[1];
     echo($page);
 }
 function vMostrarInicioSesion($rolUsuario){
     $page = file_get_contents("./templates/default_template.html");
-    $cabecera = obtenerCabecera($rolUsuario);
-    $seccion = file_get_contents("./templates/formularios/iniciarSesion.html");
-    $slices = explode("##CONTENT##", $page);
-    $page = $slices[0] .$cabecera .$seccion.$slices[1];
     $page = str_replace("##TITLE##","Iniciar Sesion",$page);
+    $cabecera = obtenerCabecera($rolUsuario);
+    $slices = explode("##CONTENT##", $page);
+    $seccion = file_get_contents("./templates/formularios/iniciarSesion.html");
+    $page = $slices[0] .$cabecera .$seccion.$slices[1];
     echo($page);
 }
-function vMostrarRegistro($rolUsuario)
-{
+function vMostrarRegistro($rolUsuario){
     $page = file_get_contents("./templates/default_template.html");
     $page = str_replace("##TITLE##", "Registrarse", $page);
-    $slices = explode("##CONTENT##", $page);
     $cabecera = obtenerCabecera($rolUsuario);
+    $slices = explode("##CONTENT##", $page);
     $seccion = file_get_contents("./templates/formularios/registrarse.html");
     if ($rolUsuario === "admin") {
         $seccion = str_replace("##registrar##", "./index.php?seccion=6&accion=altaUsuario&id=2", $seccion);
@@ -116,20 +117,44 @@ function vMostrarPerfil($resultado,$tipo,$rolUsuario){
         echo($page);
     }
 }
-function vMostrarAdmin($sesionIniciada, $rolUsuario){
-    $page = file_get_contents("./templates/default_template.html");
-    $page = str_replace("##TITLE##","Administrador",$page);
-    $cabecera = obtenerCabecera($rolUsuario);
-    $slices = explode("##CONTENT##", $page);
-    if ($sesionIniciada === 1){
-        $seccion = file_get_contents("./templates/secciones/admin.html");
-    }
-    else{
-        vMostrarHome($rolUsuario);
-    }
-    $page = $slices[0] .$cabecera .$seccion.$slices[1];
-    echo($page);
+function vMostrarListadoPersonas($resultado, $sesionIniciada, $rolUsuario){
+
+	if($sesionIniciada === 1){
+		$page = file_get_contents(("./templates/default_template.html"));
+		$page = str_replace("##TITLE##","Administrador", $page);
+		$cabecera = obtenerCabecera($rolUsuario);
+		$slices = explode("##CONTENT##", $page);
+		if(!is_object($resultado)){
+        	echo("Visualizacion de la lista de personas". "Se ha producido un error, vuelve a intentarlo mas tarde.");
+		}
+		else{
+			$seccion = file_get_contents("./templates/secciones/listaPersonas.html");
+			$trozos = explode("##fila##", $seccion);
+			$cuerpo = "";
+			while($datos = $resultado ->fetch_assoc()){
+				$aux = $trozos[1];
+		        $aux = str_replace("##oidUsuarios##",$datos["id"],$aux);
+		        $aux = str_replace("##idUsuario##", $datos["idUsuario"], $aux);
+		        $aux = str_replace("##nombre##", $datos["nombre"], $aux);
+		        $aux = str_replace("##apellidos##", $datos["apellidos"], $aux);
+		        $aux = str_replace("##correo##", $datos["correo"], $aux);
+		        $aux = str_replace("##fechaNacimiento##", $datos["fechaNacimiento"], $aux);
+		        $aux = str_replace("##telefono##", $datos["telefono"], $aux);
+		        $aux = str_replace("##password##", $datos["contrasena"], $aux);
+		        $aux = str_replace("##rol##",$datos["rol"],$aux);
+				$cuerpo .= $aux;
+			}
+			$contenido = $trozos[0] . $cuerpo . $trozos[2];
+			$page = $slices[0] .$cabecera .$contenido .$slices[1];
+			echo($page);
+		}
+	}
+	else{
+		vMostrarHome($rolUsuario);
+	}
 }
+
+/***********************Mostrar Secciones Usuario***************************/
 function vMostrarVentas($sesionIniciada, $rolUsuario){
     if($sesionIniciada === 1){
         $page = file_get_contents("./templates/default_template.html");
@@ -141,24 +166,27 @@ function vMostrarVentas($sesionIniciada, $rolUsuario){
         echo($page);
     }
     else{
-        vMostrarHome("Anonimo");
+        vMostrarHome("$rolUsuario");
     }
 }
-function vMostrarReparacion($sesionIniciada, $rolUsuario){
-    if($sesionIniciada === 1){
+
+/***********************Mostrar Secciones Administrador***************************/
+function vMostrarAdmin($sesionIniciada, $rolUsuario){
+    if ($sesionIniciada === 1){
         $page = file_get_contents("./templates/default_template.html");
-        $cabecera = obtenerCabecera($rolUsuario);
-        $page = str_replace("##TITLE##","Reparacion",$page);
-        $slices = explode("##CONTENT##", $page);
-        $seccion = file_get_contents("./templates/secciones/repararVehiculo.html");
-        $page = $slices[0] .$cabecera .$seccion.$slices[1];
-        echo($page);
+	    $page = str_replace("##TITLE##","Administrador",$page);
+	    $cabecera = obtenerCabecera($rolUsuario);
+	    $slices = explode("##CONTENT##", $page);
+        $seccion = file_get_contents("./templates/secciones/admin.html");
     }
     else{
-        vMostrarHome("Anonimo");
+        vMostrarHome($rolUsuario);
     }
+    $page = $slices[0] .$cabecera .$seccion.$slices[1];
+    echo($page);
 }
-/***********************MostrarSecciones**************************/
+
+/***********************Mostrar Resultado de InicioSesion/Registro**************************/
 function vMostrarResultadoInicioSesion($resultado,$rolUsuario){
     $page = file_get_contents("./templates/default_template.html");
     $page = str_replace("##TITLE##","Wild Motors",$page);
@@ -206,7 +234,8 @@ function vMostrarResultadoRegistro($resultado,$rolUsuario){
     $page = $slices[0] .$cabecera.$userAlert .$seccion.$slices[1];
     echo($page);
 }
-/***********************Acciones Login**************************/
+
+/***********************Mostrar Resultado EditarPerfil/**************************/
 function vMostrarResultadoModificarPerfil($resultado,$rolUsuario){
     $page = file_get_contents("./templates/default_template.html");
     $page = str_replace("##TITLE##","Wild Motors",$page);
@@ -244,11 +273,31 @@ function vMostrarResultadoEliminarPerfil($resultado,$rolUsuario){
     $page = $slices[0] .$cabecera.$userAlert .$seccion.$slices[1];
     echo($page);
 }
-/***********************Acciones Editar perfil**************************/
+
+/***********************Mostrar Acciones Administrador**************************/
 function vMostrarAltaPersona($sesionIniciada, $rolUsuario){
     if ($sesionIniciada === 1 ){
         vMostrarRegistro($rolUsuario);
 
+    }
+    else{
+        vMostrarHome($rolUsuario);
+    }
+}
+function vMostrarSeleccionUsuario($sesionIniciada,$rolUsuario){
+    if ($sesionIniciada  === 1){
+        if ($rolUsuario === "admin") {
+            $page = file_get_contents("./templates/default_template.html");
+            $cabecera = obtenerCabecera($rolUsuario);
+            $page = str_replace("##TITLE##","Administrador",$page);
+            $slices = explode("##CONTENT##", $page);
+            $seccion = file_get_contents("./templates/formularios/editarUsuario.html");
+            $page = $slices[0] .$cabecera .$seccion.$slices[1];
+            echo($page);
+        }
+        else{
+            vMostrarHome($rolUsuario);
+        }
     }
     else{
         vMostrarHome($rolUsuario);
@@ -280,25 +329,6 @@ function vMostrarResultadoAltaPersona($sesionIniciada, $resultado, $rolUsuario){
     }
     $page = $slices[0] .$cabecera.$userAlert .$seccion.$slices[1];
     echo($page);
-}
-function vMostrarSeleccionUsuario($sesionIniciada,$rolUsuario){
-    if ($sesionIniciada  === 1){
-        if ($rolUsuario === "admin") {
-            $page = file_get_contents("./templates/default_template.html");
-            $cabecera = obtenerCabecera($rolUsuario);
-            $page = str_replace("##TITLE##","Administrador",$page);
-            $slices = explode("##CONTENT##", $page);
-            $seccion = file_get_contents("./templates/formularios/editarUsuario.html");
-            $page = $slices[0] .$cabecera .$seccion.$slices[1];
-            echo($page);
-        }
-        else{
-            vMostrarHome($rolUsuario);
-        }
-    }
-    else{
-        vMostrarHome($rolUsuario);
-    }
 }
 function vMostrarResultadoSeleccionUsuario($sesionIniciada,$resultado,$rolUsuario){
     if ($sesionIniciada  === 1){
@@ -373,4 +403,21 @@ function vMostrarResultadoBorrarAdministrador($resultado,$rolUsuario){
     $page = $slices[0] .$cabecera.$userAlert .$seccion.$slices[1];
     echo($page);
 }
-/***********************Acciones Administrador**************************/
+
+
+
+
+function vMostrarReparacion($sesionIniciada, $rolUsuario){
+    if($sesionIniciada === 1){
+        $page = file_get_contents("./templates/default_template.html");
+        $page = str_replace("##TITLE##","Reparacion",$page);
+        $cabecera = obtenerCabecera($rolUsuario);
+        $slices = explode("##CONTENT##", $page);
+        $seccion = file_get_contents("./templates/secciones/repararVehiculo.html");
+        $page = $slices[0] .$cabecera .$seccion.$slices[1];
+        echo($page);
+    }
+    else{
+        vMostrarHome($rolUsuario);
+    }
+}

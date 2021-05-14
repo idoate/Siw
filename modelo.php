@@ -42,7 +42,7 @@ function datosInicioSesion(){
 function mCreaConexionbd(){
     $db_host = 'localhost';
     $db_user = 'root';
-    $db_password = "root";
+    $db_password = "";
     $db_db = "db_grupo33";
     /*
     $db_host = "dbserver";
@@ -74,7 +74,7 @@ function mSesionIniciada(){
             $contrasena = $_SESSION["contrasena"];
             if (isset($_SESSION["rol"])) {
                 $rol = $_SESSION["rol"];
-                $consulta = "SELECT id, idUsuario, contrasena, rol  FROM cliente WHERE idUsuario = '".$idUsuario."'";
+                $consulta = "SELECT id, idUsuario, contrasena, rol  FROM final_usuario WHERE idUsuario = '".$idUsuario."'";
                 if ($resultado = $miConexion->query($consulta)) {
                     if ($datosBBDD = $resultado->fetch_assoc()) {
                         if ($contrasena === $datosBBDD["contrasena"]) {
@@ -99,7 +99,7 @@ function mConectarUsuario(){
     $usuario = datosInicioSesion();
     if(comprobarDatosLoginValido($usuario)) {
         $miConexion = mCreaConexionbd();
-        $consulta = "SELECT id, idUsuario, contrasena, rol  FROM cliente WHERE idUsuario = '".$usuario["username"]."'";
+        $consulta = "SELECT id, idUsuario, contrasena, rol  FROM final_usuario WHERE idUsuario = '".$usuario["username"]."'";
         if (!$miConexion->query($consulta)){
             echo("Error description: " . $miConexion->error);
             return -2;//fallo en la consulta
@@ -129,10 +129,10 @@ function mRegistrarse(){
     $nuevoUsuario = datosRegistroUsuario();
     if (comprobarRegistroValido($nuevoUsuario)) {
         $miConexion = mCreaConexionbd();
-        $sql = $miConexion->query("SELECT idUsuario  FROM cliente WHERE idUsuario = '" . $nuevoUsuario["username"] . "'");
+        $sql = $miConexion->query("SELECT idUsuario  FROM final_usuario WHERE idUsuario = '" . $nuevoUsuario["username"] . "'");
         $userData = mysqli_fetch_object($sql);
         if ($userData == FALSE) {
-            if (!$miConexion->query("INSERT INTO cliente(idUsuario,nombre,apellidos,correo,fechaNacimiento,telefono,contrasena) VALUES ('$nuevoUsuario[username]','$nuevoUsuario[nombre]','$nuevoUsuario[apellidos]','$nuevoUsuario[correo]','$nuevoUsuario[fechaNacimiento]','$nuevoUsuario[telefono]','$nuevoUsuario[password]')")) {
+            if (!$miConexion->query("INSERT INTO final_usuario(idUsuario,nombre,apellidos,correo,fechaNacimiento,telefono,contrasena) VALUES ('$nuevoUsuario[username]','$nuevoUsuario[nombre]','$nuevoUsuario[apellidos]','$nuevoUsuario[correo]','$nuevoUsuario[fechaNacimiento]','$nuevoUsuario[telefono]','$nuevoUsuario[password]')")) {
                 echo("Error description: " . $miConexion->error);//fallo en la consulta
                 $miConexion->close();
                 return -2;//fallo BBDD
@@ -157,7 +157,7 @@ function mModificarPerfil(){
     $usuario = datosRegistroUsuario();
     $id = $_POST["id"];
     $rol = $_POST["rol"];
-    $consulta = "update cliente 
+    $consulta = "update final_usuario 
     			 set idUsuario = '$usuario[username]', nombre = '$usuario[nombre]', apellidos = '$usuario[apellidos]', correo = '$usuario[correo]', fechaNacimiento = '$usuario[fechaNacimiento]', telefono = '$usuario[telefono]', contrasena = '$usuario[password]',rol = '$rol' 
     			 where id = '$id'";
 
@@ -173,7 +173,7 @@ function mModificarPerfil(){
 function mEliminarPerfil(){
     $miconexion = mCreaConexionbd();
     $id = $_POST["id"];
-    $consulta = "DELETE FROM cliente WHERE '$id' = id ";
+    $consulta = "DELETE FROM final_usuario WHERE '$id' = id ";
     if ($resultado = $miconexion->query($consulta)){
         mCerrarSesion();
         return 1;
@@ -185,7 +185,7 @@ function mEliminarPerfil(){
 function mDatosUnaPersona(){
     $miconexion = mCreaConexionbd();
     $id = $_SESSION["id"];
-    $consulta = "select * from cliente where id = '$id'";
+    $consulta = "select * from final_usuario where id = '$id'";
 
     if($resultado = $miconexion->query($consulta)){
         return $resultado;
@@ -197,7 +197,7 @@ function mDatosUnaPersona(){
 function mSeleccionarUsuario(){
     $usuario = $_POST["usernameCliente"];
     $miConexion = mCreaConexionbd();
-    $consulta = "SELECT id, idUsuario, rol  FROM cliente WHERE idUsuario = '".$usuario."'";
+    $consulta = "SELECT id, idUsuario, rol  FROM final_usuario WHERE idUsuario = '".$usuario."'";
     if (!$miConexion->query($consulta)){
         echo("Error description: " . $miConexion->error);
         return -3;//fallo en la consulta
@@ -220,7 +220,7 @@ function mHacerAdministrador(){
     if(mSesionIniciada()&&$_SESSION["rol"]==="admin"){
         $miconexion = mCreaConexionbd();
         $id = $_GET["oidUsuario"];
-        $consulta = "update cliente 
+        $consulta = "update final_usuario 
     			 set rol = 'admin' 
     			 where id = '$id'";
 
@@ -234,13 +234,24 @@ function mHacerAdministrador(){
     else{
         return -1;
     }
+}
+function mDatosTodasPersonas(){
+    $miconexion = mCreaConexionbd();
+    $id = $_SESSION["id"];
+    $consulta = "select * from final_usuario where rol = 'user'";
 
+    if($resultado = $miconexion->query($consulta)){
+        return $resultado;
+
+    }else{
+        return -1;
+    }
 }
 function mBorrarAdministrador(){
     if(mSesionIniciada() && $_SESSION["rol"]==="admin"){
         $miconexion = mCreaConexionbd();
         $id = $_GET["oidUsuario"];
-        $consulta = "DELETE FROM cliente WHERE id = '$id'";
+        $consulta = "DELETE FROM final_usuario WHERE id = '$id'";
         if ($resultado = $miconexion->query($consulta)){
             return 1;
         }
