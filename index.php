@@ -95,6 +95,15 @@ switch($seccion){
                     break;
             }
         }
+        elseif($accion === "mostrarUsuarios"){
+            switch ($id) {
+                case 1:
+                    # code...
+                    vMostrarListadoPersonas(mDatosTodasPersonas(),mSesionIniciada(),    mGetRol());
+                    break;
+            }
+
+        }
         elseif ($accion === "altaUsuario"){
             switch ($id) {
                 case 1:

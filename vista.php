@@ -177,12 +177,13 @@ function vMostrarVentas($sesionIniciada, $rolUsuario)
         vMostrarHome($rolUsuario);
     }
 }
+
 function vMostrarReparacion($sesionIniciada, $rolUsuario)
 {
     if($sesionIniciada === 1){
         $page = file_get_contents("./templates/default_template.html");
-        $cabecera = obtenerCabecera($rolUsuario);
         $page = str_replace("##TITLE##","Reparacion",$page);
+        $cabecera = obtenerCabecera($rolUsuario);
         $slices = explode("##CONTENT##", $page);
         $seccion = file_get_contents("./templates/secciones/repararVehiculo.html");
         $page = $slices[0] .$cabecera .$seccion.$slices[1];
@@ -514,5 +515,41 @@ function vMostrarResultadoSubirModeloCoche($resultado,$rolUsuario)
     }
     $page = $slices[0] .$cabecera.$userAlert .$seccion.$slices[1];
     echo($page);
+}
+function vMostrarListadoPersonas($resultado, $sesionIniciada, $rolUsuario){
+
+    if($sesionIniciada === 1){
+        $page = file_get_contents(("./templates/default_template.html"));
+        $page = str_replace("##TITLE##","Administrador", $page);
+        $cabecera = obtenerCabecera($rolUsuario);
+        $slices = explode("##CONTENT##", $page);
+        if(!is_object($resultado)){
+            echo("Visualizacion de la lista de personas". "Se ha producido un error, vuelve a intentarlo mas tarde.");
+        }
+        else{
+            $seccion = file_get_contents("./templates/secciones/listaPersonas.html");
+            $trozos = explode("##fila##", $seccion);
+            $cuerpo = "";
+            while($datos = $resultado ->fetch_assoc()){
+                $aux = $trozos[1];
+                $aux = str_replace("##oidUsuarios##",$datos["id"],$aux);
+                $aux = str_replace("##idUsuario##", $datos["idUsuario"], $aux);
+                $aux = str_replace("##nombre##", $datos["nombre"], $aux);
+                $aux = str_replace("##apellidos##", $datos["apellidos"], $aux);
+                $aux = str_replace("##correo##", $datos["correo"], $aux);
+                $aux = str_replace("##fechaNacimiento##", $datos["fechaNacimiento"], $aux);
+                $aux = str_replace("##telefono##", $datos["telefono"], $aux);
+                $aux = str_replace("##password##", $datos["contrasena"], $aux);
+                $aux = str_replace("##rol##",$datos["rol"],$aux);
+                $cuerpo .= $aux;
+            }
+            $contenido = $trozos[0] . $cuerpo . $trozos[2];
+            $page = $slices[0] .$cabecera .$contenido .$slices[1];
+            echo($page);
+        }
+    }
+    else{
+        vMostrarHome($rolUsuario);
+    }
 }
 /***********************Acciones Administrador**************************/

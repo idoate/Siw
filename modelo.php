@@ -194,6 +194,18 @@ function mDatosUnaPersona()
         return -1;
     }
 }
+function mDatosTodasPersonas(){
+    $miconexion = mCreaConexionbd();
+    $id = $_SESSION["id"];
+    $consulta = "select * from final_usuario where rol = 'user'";
+
+    if($resultado = $miconexion->query($consulta)){
+        return $resultado;
+
+    }else{
+        return -1;
+    }
+}
 /*******************************Funciones de Usuario*******************/
 function mSeleccionarUsuario()
 {
