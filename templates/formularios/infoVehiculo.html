@@ -1,0 +1,17 @@
+<link rel="stylesheet" href= "./css/comentario.css"/>
+<section>
+	<div class="coche"> <!--Informacion general-->
+	     <h3>##marca##</h3 > <!--Marca-->
+	     <h4>##modelo##</h4>
+	    <img src="./uploadImages/##imagen##">
+	    <p>##precio## € </p>
+	</div>
+	<main>
+	    <form action = "./index.php?seccion=3&accion=mostrarCoche" method = "POST">
+	        <textarea name="comentarios" rows="5" cols="100" placeholder="Escribe aquí tus comentarios"></textarea><br>
+	        <label for="submit">
+	            <input type="submit" name="botonSubmit" id="submit" value= "Hacer oferta">
+	        </label>
+	    </form>
+	</main>
+</section>

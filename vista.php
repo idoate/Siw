@@ -65,6 +65,7 @@ function vMostrarCatalogo($resultado,$rolUsuario)
             $coche = str_replace("##modelo##",$datos["modelo"],$coche);
             $coche = str_replace("##precio##",$datos["precio"],$coche);
             $coche = str_replace("##imagen##",$datos["foto"],$coche);
+            $coche = str_replace("##matricula##",$datos["matricula"],$coche);
             $catalogo = $catalogo.$coche;
         }
         $seccion = $trozos[0].$catalogo.$trozos[2];
@@ -72,8 +73,35 @@ function vMostrarCatalogo($resultado,$rolUsuario)
         $page = str_replace("##TITLE##","Modelos",$page);
         echo($page);
     }
-
 }
+
+function vMostrarInfoVehiculo($resultado,$rolUsuario)
+{
+    $page = file_get_contents("./templates/default_template.html");
+    $cabecera = obtenerCabecera($rolUsuario);
+    $slices = explode("##CONTENT##", $page);
+    if($resultado === -1){
+        $seccion = file_get_contents("./templates/secciones/home.html");
+        $userAlert = file_get_contents("./templates/userAlert/error.html");
+        $userAlert = str_replace("##mensaje##","Ha habido un fallo mostrando el catalogo , por favor intentelo mas tarde", $userAlert);
+        $page = $slices[0] .$cabecera.$userAlert .$seccion.$slices[1];
+        $page = str_replace("##TITLE##","Error Modelos",$page);
+        echo($page);
+    }
+    else{
+        $seccion = file_get_contents("./templates/formularios/infoVehiculo.html");
+        $datos = $resultado->fetch_assoc();
+        $seccion = str_replace("##marca##",$datos["marca"],$seccion);
+        $seccion = str_replace("##modelo##",$datos["modelo"],$seccion);
+        $seccion = str_replace("##precio##",$datos["precio"],$seccion);
+        $seccion = str_replace("##imagen##",$datos["foto"],$seccion);
+        $page = $slices[0] .$cabecera .$seccion.$slices[1];
+        $page = str_replace("##TITLE##","Informacion",$page);
+        echo($page);
+    }
+}
+
+
 function vMostrarServicios($rolUsuario)
 {
     $page = file_get_contents("./templates/default_template.html");

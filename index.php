@@ -22,13 +22,20 @@ session_start();
 
 switch($seccion){
     case 1: // Seccion Home
-        vMostrarHome(mGetRol());
-        break;
+            vMostrarHome(mGetRol());
+            break;
     case 2: // Seccion Ofertas
         vMostrarOfertas(mGetRol());
         break;
     case 3: // Seccion Modelos
-        vMostrarCatalogo(mCatalogoCoches(),mGetRol());
+        if ($accion === "mostrarCoche"){
+            vMostrarCatalogo(mCatalogoCoches(),mGetRol());
+            break;
+        }
+        else if ($accion === "masInfo"){
+            vMostrarInfoVehiculo(mInfoVehiculo(), mGetRol());
+        }
+        
         break;
     case 4: // Seccion Servicios
         vMostrarServicios(mGetRol());

@@ -2,7 +2,7 @@ body{
     background-image: url(../img/fondoInicioSesion.jpeg);
     background-size: cover;
 }
-body main {
+body form {
     padding: 50px;
     background-color: white;
     opacity: 90%;

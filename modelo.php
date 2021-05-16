@@ -33,7 +33,7 @@ function mCreaConexionbd()
 {
     $db_host = 'localhost';
     $db_user = 'root';
-    $db_password = "root";
+    $db_password = "";
     $db_db = "db_grupo33";
     /*
     $db_host = "dbserver";
@@ -151,7 +151,7 @@ function mCerrarSesion()
 /*****************************Funciones de Sesion**********************/
 function mModificarPerfil(): int
 {
-    $miconexion = mCreaConexionbd();
+    $miConexion = mCreaConexionbd();
     $usuario = datosRegistroUsuario();
     $id = $_POST["id"];
     $rol = $_POST["rol"];
@@ -159,7 +159,7 @@ function mModificarPerfil(): int
     			 set idUsuario = '$usuario[username]', nombre = '$usuario[nombre]', apellidos = '$usuario[apellidos]', correo = '$usuario[correo]', fechaNacimiento = '$usuario[fechaNacimiento]', telefono = '$usuario[telefono]', contrasena = '$usuario[password]',rol = '$rol' 
     			 where id = '$id'";
 
-    if ($resultado = $miconexion->query($consulta)){
+    if ($resultado = $miConexion->query($consulta)){
         $_SESSION["contrasena"] = $usuario["password"];
         return 1;
     }
@@ -170,10 +170,10 @@ function mModificarPerfil(): int
 }
 function mEliminarPerfil():int
 {
-    $miconexion = mCreaConexionbd();
+    $miConexion = mCreaConexionbd();
     $id = $_POST["id"];
     $consulta = "DELETE FROM final_usuario WHERE '$id' = id ";
-    if ($resultado = $miconexion->query($consulta)){
+    if ($resultado = $miConexion->query($consulta)){
         mCerrarSesion();
         return 1;
     }
@@ -183,11 +183,11 @@ function mEliminarPerfil():int
 }
 function mDatosUnaPersona()
 {
-    $miconexion = mCreaConexionbd();
+    $miConexion = mCreaConexionbd();
     $id = $_SESSION["id"];
     $consulta = "select * from final_usuario where id = '$id'";
 
-    if($resultado = $miconexion->query($consulta)){
+    if($resultado = $miConexion->query($consulta)){
         return $resultado;
 
     }else{
@@ -195,11 +195,11 @@ function mDatosUnaPersona()
     }
 }
 function mDatosTodasPersonas(){
-    $miconexion = mCreaConexionbd();
+    $miConexion = mCreaConexionbd();
     $id = $_SESSION["id"];
     $consulta = "select * from final_usuario where rol = 'user'";
 
-    if($resultado = $miconexion->query($consulta)){
+    if($resultado = $miConexion->query($consulta)){
         return $resultado;
 
     }else{
@@ -233,13 +233,13 @@ function mSeleccionarUsuario()
 function mHacerAdministrador(): int
 {
     if(mSesionIniciada()&&$_SESSION["rol"]==="admin"){
-        $miconexion = mCreaConexionbd();
+        $miConexion = mCreaConexionbd();
         $id = $_GET["oidUsuario"];
         $consulta = "update final_usuario 
     			 set rol = 'admin' 
     			 where id = '$id'";
 
-        if ($resultado = $miconexion->query($consulta)){
+        if ($resultado = $miConexion->query($consulta)){
             return 1;
         }
         else{
@@ -254,10 +254,10 @@ function mHacerAdministrador(): int
 function mBorrarAdministrador(): int
 {
     if(mSesionIniciada() && $_SESSION["rol"]==="admin"){
-        $miconexion = mCreaConexionbd();
+        $miConexion = mCreaConexionbd();
         $id = $_GET["oidUsuario"];
         $consulta = "DELETE FROM final_usuario WHERE id = '$id'";
-        if ($resultado = $miconexion->query($consulta)){
+        if ($resultado = $miConexion->query($consulta)){
             return 1;
         }
         else{
@@ -346,6 +346,18 @@ function mCatalogoCoches()
     }
     return -1;
 
+}
+
+function mInfoVehiculo ()
+{
+    $miConexion = mCreaConexionbd();
+    $matricula = $_GET["matricula"];
+    $consulta = "SELECT * FROM final_vehiculo where matricula= '$matricula'";
+    if ($resultado = $miConexion->query($consulta)){
+        $datos = $miConexion->query($consulta);
+        return $datos;
+    }
+    return -1;                  
 }
 /*******************************Funciones de Administrador**************/
 
