@@ -105,9 +105,10 @@ switch($seccion){
         elseif($accion === "mostrarUsuarios"){
             switch ($id) {
                 case 1:
-                    # code...
                     vMostrarListadoPersonas(mDatosTodasPersonas(),mSesionIniciada(),    mGetRol());
                     break;
+                case 2:
+                    mValidarPDF();
             }
 
         }

@@ -360,4 +360,59 @@ function mInfoVehiculo ()
     return -1;                  
 }
 /*******************************Funciones de Administrador**************/
+function mvalidarPDF(){
+    require('./templates/fpdf/fpdf.php');
+    class PDF extends FPDF{
+        // Cabecera de página
+        function Header()
+        {
+            // Arial bold 15
+            $this->SetFont('Arial','B',15);
+            // Movernos a la derecha
+            $this->Cell(65);
+            // Título
+            $this->Cell(60,10,'Listado de usuarios',1,0,'C');
+            // Salto de línea
+            $this->Ln(20);
+        }
 
+        // Pie de página
+        function Footer()
+        {
+            // Posición: a 1,5 cm del final
+            $this->SetY(-15);
+            // Arial italic 8
+            $this->SetFont('Arial','I',8);
+            // Número de página
+            $this->Cell(0,10,utf8_decode('Página ').$this->PageNo().'/{nb}',0,0,'C');
+        }
+    }
+
+    $miConexion = mCreaConexionbd();
+    $consulta = "select * from final_usuario";
+    $resultado = $miConexion->query($consulta);
+    
+    $pdf = new PDF();
+    $pdf->AliasNbPages();
+    $pdf->AddPage();
+    $pdf->SetFont('Arial', 'B', 11);
+        $pdf->Cell(1,6,"", 0, 1,'C');
+        $pdf->Cell(8, 6, 'id', 1 , 0,'C');
+        $pdf->Cell(20,6,'Usuario', 1, 0,'C');
+        $pdf->Cell(20,6,'Nombre', 1, 0,'C');
+        $pdf->Cell(40,6,'Apellidos', 1, 0,'C');
+        $pdf->Cell(55 ,6,'Correo', 1, 0,'C');
+        $pdf->Cell(25,6,'fNacimiento', 1, 0,'C');
+        $pdf->Cell(22,6,'tlfn', 1, 0,'C');
+    while($row = $resultado->fetch_assoc()){
+        $pdf->Cell(1,6,"", 0, 1,'C');
+        $pdf->Cell(8, 6, $row['id'], 1 , 0,'C');
+        $pdf->Cell(20,6,$row['idUsuario'], 1, 0,'C');
+        $pdf->Cell(20,6,$row['nombre'], 1, 0,'C');
+        $pdf->Cell(40,6,$row['apellidos'], 1, 0,'C');
+        $pdf->Cell(55 ,6,$row['correo'], 1, 0,'C');
+        $pdf->Cell(25,6,$row['fechaNacimiento'], 1, 0,'C');
+        $pdf->Cell(22,6,$row['telefono'], 1, 0,'C');
+    }
+    $pdf->Output();
+}

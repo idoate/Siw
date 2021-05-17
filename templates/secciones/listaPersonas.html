@@ -25,4 +25,13 @@
         ##fila##
     </table>
     <button><a href="./index.php?seccion=6&accion=editarUsuario&id=1">Volver</a></button>
+    <button><a href="./index.php?seccion=6&accion=mostrarUsuarios&id=2">Generar PDF</a></button>
+
+    <form class="mb-5" role="form" method="post" action="index.php">
+        Clicar para generar el archivo PDF de la lista de usuarios registrados (admin incluidos): <br><br>
+        <input type="submit" value="Generar">
+
+        <input type="hidden" name="accion" value="listadousuarios">
+        <input type="hidden" name="id" value="5">
+    </form>
 </main>
