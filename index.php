@@ -22,8 +22,8 @@ session_start();
 
 switch($seccion){
     case 1: // Seccion Home
-            vMostrarHome(mGetRol());
-            break;
+        vMostrarHome(mGetRol());
+        break;
     case 2: // Seccion Ofertas
         vMostrarOfertas(mGetRol());
         break;
@@ -33,9 +33,16 @@ switch($seccion){
             break;
         }
         else if ($accion === "masInfo"){
-            vMostrarInfoVehiculo(mInfoVehiculo(), mGetRol());
+            switch ($id) {
+                case 1:
+                    vMostrarInfoVehiculo(mInfoVehiculo(), mComentarios(),mGetRol());//mostar comentario
+                    break;
+                case 2:
+                    $resultado = mAnandirComentario();
+                    vAnadirComentario($resultado, mInfoVehiculo(), mComentarios(),mGetRol());
+                    break;
+            }
         }
-        
         break;
     case 4: // Seccion Servicios
         vMostrarServicios(mGetRol());
@@ -82,9 +89,11 @@ switch($seccion){
                 case 6://validar eliminacion persona
                     if (mSesionIniciada()){
                         vMostrarResultadoEliminarPerfil(mEliminarPerfil(),mGetRol());
+                        break;
                     }
                     else{
                         vMostrarHome("anonimo");
+                        break;
                     }
                     break;
                 case 7://modificar contraseña
@@ -109,6 +118,7 @@ switch($seccion){
                     break;
                 case 2:
                     mValidarPDF();
+                    break;
             }
 
         }
@@ -131,12 +141,10 @@ switch($seccion){
                     #mostrar el formulario de seleccion de usuario
                     vMostrarSeleccionUsuario(mSesionIniciada(),mGetRol());
                     break;
-
                 case 2:
                     #validar Seleccion usuario para hacerle administrador o elimirarlo
                     vMostrarResultadoSeleccionUsuario(mSesionIniciada(),mSeleccionarUsuario(),mGetRol());
                     break;
-
                 case 3:
                     vMostrarResultadoNuevoAdministrador(mHacerAdministrador(),mGetRol());
                     break;
@@ -168,7 +176,6 @@ switch($seccion){
                     break;
             }
         }
-        break;
     case 7: // Seccion Ventas
         vMostrarVentas(mSesionIniciada(),mGetRol());
         break;

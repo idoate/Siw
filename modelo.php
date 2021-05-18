@@ -317,6 +317,7 @@ function mSubirCoche():int
     $marcaCoche = $_POST["marcaCoche"];
     $modeloCoche = $_POST["modeloCoche"];
     $matriculaCoche = $_POST["matriculaCoche"];
+    $matriculaCoche = strtoupper($matriculaCoche);
     $descripcionCoche = $_POST["descripcionCoche"];
     $precioCoche = $_POST["precioCoche"];
     $fileTmpPath = $_FILES['fotoPrincipalCoche']['tmp_name'];
@@ -352,7 +353,19 @@ function mInfoVehiculo ()
 {
     $miConexion = mCreaConexionbd();
     $matricula = $_GET["matricula"];
-    $consulta = "SELECT * FROM final_vehiculo where matricula= '$matricula'";
+    $consulta = "SELECT * FROM final_vehiculo where matricula = '$matricula'";
+    if ($resultado = $miConexion->query($consulta)){
+        $datos = $miConexion->query($consulta);
+        return $datos;
+    }
+    return -1;                  
+}
+
+function mComentarios()    
+{
+    $miConexion = mCreaConexionbd();
+    $matricula = $_GET["matricula"];
+    $consulta = "SELECT * FROM final_comentario where matricula = '$matricula'";
     if ($resultado = $miConexion->query($consulta)){
         $datos = $miConexion->query($consulta);
         return $datos;
@@ -360,6 +373,71 @@ function mInfoVehiculo ()
     return -1;                  
 }
 /*******************************Funciones de Administrador**************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function mvalidarPDF(){
     require('./templates/fpdf/fpdf.php');
     class PDF extends FPDF{
