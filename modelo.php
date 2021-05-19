@@ -16,7 +16,7 @@ function comprobarDatosValidos($usuario):bool
 function datosRegistroUsuario(): array
 {
     return $nuevoUsuario =["username" =>  $_POST["usuario"],
-        "password" => $_POST["password"],
+        "password" =>md5( $_POST["password"]),
         "nombre"=> $_POST["nombre"],
         "apellidos"=>$_POST["apellidos"],
         "telefono" => $_POST["telefono"],
@@ -26,14 +26,14 @@ function datosRegistroUsuario(): array
 function datosInicioSesion(): array
 {
     return $usuario = ["username" => $_POST["usernameCliente"],
-        "password" =>$_POST["passwordCliente"]];
+        "password" =>md5($_POST["passwordCliente"])];
 }
 /******************************Funciones Auxiliaress********************/
 function mCreaConexionbd()
 {
     $db_host = 'localhost';
     $db_user = 'root';
-    $db_password = "";
+    $db_password = "root";
     $db_db = "db_grupo33";
     /*
     $db_host = "dbserver";
@@ -284,7 +284,7 @@ function mCargaMasivaUsuarios(): int
                 $correo = $linea[3];
                 $fechaNacimiento = $linea[4];
                 $telefono = $linea[5];
-                $contrasena = $linea[6];
+                $contrasena = md5($linea[6]);
                 $rol = $linea[7];
                 $consulta = "insert into final_usuario (idUsuario, nombre, apellidos, correo, fechaNacimiento, telefono, contrasena, rol)
                          values ('$idUsuario', '$nombre', '$apellidos', '$correo', '$fechaNacimiento', '$telefono', '$contrasena', '$rol')";
@@ -323,19 +323,43 @@ function mSubirCoche():int
     $fileTmpPath = $_FILES['fotoPrincipalCoche']['tmp_name'];
     $fileName = $_FILES['fotoPrincipalCoche']['name'];
     $extension = pathinfo($fileName,PATHINFO_EXTENSION);
-    $fotoPrincipal = uniqid().".".$extension;
-    if(!move_uploaded_file($fileTmpPath,"./uploadImages/".$fotoPrincipal)){
-        return -2;
+    $nameImagen= uniqid().".".$extension;
+    if ($extension === "jpeg" || $extension === "jpg"){
+        $origen = imagecreatefromjpeg($fileTmpPath);
+    }
+    else if($extension === "png"){
+        $origen = imagecreatefrompng($fileTmpPath);
     }
     else{
-        $consulta = "INSERT INTO final_vehiculo(matricula,idPropietario,marca,modelo,foto,precio,descripcion) 
-                      VALUES('$matriculaCoche','$idPropietario','$marcaCoche','$modeloCoche','$fotoPrincipal','$precioCoche','$descripcionCoche')";
+        return -5;
     }
-    if($resultado = $miConexion->query($consulta)){
-        return 1;
+    $imagenGrande = imagescale( $origen, 1296, 864 );
+    $imagenMediana = imagescale( $origen, 972, 648 );
+    $imagenPequenia = imagescale( $origen, 240, 160 );
+    if ($extension === "jpeg" || $extension === "jpg"){
+        imagejpeg($imagenPequenia, "./uploadImages/small/".$nameImagen);
+        imagejpeg($imagenGrande, "./uploadImages/big/".$nameImagen);
+        imagejpeg($imagenMediana, "./uploadImages/medium/".$nameImagen);
     }
-    echo $consulta;
+    else if($extension === "png"){
+        imagepng($imagenPequenia, "./uploadImages/small/".$nameImagen);
+        imagepng($imagenGrande, "./uploadImages/big/".$nameImagen);
+        imagepng($imagenMediana, "./uploadImages/medium/".$nameImagen);
+    }
+
+    $consulta1 = "INSERT INTO final_vehiculo(matricula,idPropietario,marca,modelo,foto,precio,descripcion) 
+                      VALUES('$matriculaCoche','$idPropietario','$marcaCoche','$modeloCoche','$nameImagen','$precioCoche','$descripcionCoche')";
+    $consulta2 = "INSERT INTO final_imagenes(matricula,imagen) 
+                      VALUES('$matriculaCoche','$nameImagen')";
+
+    if($miConexion->query($consulta1)) {
+        if( $miConexion->query($consulta2)) {
+            return 1;
+        }
+        return -1;
+    }
     return -1;
+
 }
 function mCatalogoCoches()
 {
@@ -353,7 +377,7 @@ function mInfoVehiculo ()
 {
     $miConexion = mCreaConexionbd();
     $matricula = $_GET["matricula"];
-    $consulta = "SELECT * FROM final_vehiculo where matricula = '$matricula'";
+    $consulta = "SELECT * FROM final_vehiculo,final_usuario where matricula = '$matricula' AND final_vehiculo.idPropietario = final_usuario.idUsuario";
     if ($resultado = $miConexion->query($consulta)){
         $datos = $miConexion->query($consulta);
         return $datos;
@@ -361,7 +385,7 @@ function mInfoVehiculo ()
     return -1;                  
 }
 
-function mComentarios()    
+function mObtenerComentarios()
 {
     $miConexion = mCreaConexionbd();
     $matricula = $_GET["matricula"];
@@ -373,73 +397,91 @@ function mComentarios()
     return -1;                  
 }
 /*******************************Funciones de Administrador**************/
+function mAnadirComentario(){
+    $miConexion = mCreaConexionbd();
+    $idUsuario = $_SESSION["idUsuario"];
+    $comentario = $_POST["comentarios"];
+    $matricula= $_GET["matricula"];
+    if (empty($comentario)) {
+            return -2;
+    }
+
+    else{
+        $consulta = "INSERT INTO final_comentario (id, matricula, idUsuario,comentario) 
+                        VALUES (NULL, '$matricula', '$idUsuario', '$comentario')";
+    }
+    if($resultado = $miConexion->query($consulta)){
+        return 1;
+    }
+
+    echo $consulta;
+    return -1;
+
+}
+function mObtenerFotos(){
+    $miConexion = mCreaConexionbd();
+    $matricula = $_GET["matricula"];
+    $consulta = "SELECT * FROM final_imagenes where matricula = '$matricula'";
+    if ($resultado = $miConexion->query($consulta)){
+        $datos = $miConexion->query($consulta);
+        return $datos;
+    }
+    return -1;
+}
+function mBorrarComentario(){
+    if (mGetRol() === "admin"){
+        $miConexion = mCreaConexionbd();
+        $idComentario = $_GET["idComentario"];
+        $consulta = "DELETE FROM final_comentario where id = '$idComentario'";
+    }
+    if ( $miConexion->query($consulta)){
+
+        return 2;
+    }
+    return -1;
+}
+function mEnviarSolicitudVenta(){
+    $miConexion = mCreaConexionbd();
+    $idPropietario = $_SESSION["idUsuario"];
+    $marcaCoche = $_POST["marcaCoche"];
+    $modeloCoche = $_POST["modeloCoche"];
+    $matriculaCoche = $_POST["matriculaCoche"];
+    $matriculaCoche = strtoupper($matriculaCoche);
+    $descripcionCoche = $_POST["descripcionCoche"];
+    $precioCoche = $_POST["precioCoche"];
+    $consulta = "SELECT correo FROM final_usuario where idUsuario = '$idPropietario'";
+    if ( $resultado = $miConexion->query($consulta)){
+        $datos=$resultado->fetch_assoc();
+        $para      = 'idoate.inigo@gmail.com';
+        $titulo    = 'Solicitud venta Vehiculo';
+        $mensaje   = 'Marca del coche: '.$marcaCoche."\r\n".
+                     "Modelo del coche: ".$modeloCoche."\r\n".
+                     "Matricula  del coche: ".$matriculaCoche."\r\n".
+                     "Precio del coche".$precioCoche."\r\n".
+                     "Descripcion del coche: ".$descripcionCoche;
+        $cabeceras = 'From:'.$datos["correo"] . "\r\n" .
+            'X-Mailer: PHP/' . phpversion();
 
 
+        if(mail($para, $titulo, $mensaje, $cabeceras)){
+            $mensajeuser = 'Has realizado tu solicitud para subir el vehiculo correctamente'."\r\n".$mensaje;
+             $para = $datos["correo"]xww;
+            if( mail($para, $titulo, $mensajeuser, $cabeceras)) {
+               return 1;
+           }
+     }
+     return-1;
+
+    }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 function mvalidarPDF(){
     require('./templates/fpdf/fpdf.php');
+
+
     class PDF extends FPDF{
         // Cabecera de página
         function Header()
@@ -494,3 +536,4 @@ function mvalidarPDF(){
     }
     $pdf->Output();
 }
+

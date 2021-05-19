@@ -1,17 +1,19 @@
-<link rel="stylesheet" href= "./css/formulario.css"/>
-<main>
-        <form action = "./index.php?seccion=5&accion=iniciarSesion&id=2" method = "POST">
-            <label for="usuario">
-                <input type="text" id="usuario" name="usernameCliente" placeholder="Usuario" maxlength="32" minlength="1"><br>
-            </label>
-            <label for="clave">
-                <input type="password" id="clave" name="passwordCliente" placeholder="Contraseña" maxlength="32" minlength="1"><br>
-            </label>
-            <label for="submit">
-                <input type="submit" name="botonSubmit" id="submit" value= "Iniciar Sesion">
-            </label>
-        </form>
-        <p>¿No tienes una cuenta?
-            <a href = "index.php?seccion=5&accion=registrarse&id=1" target= "_top"title = "servicios">Registrate<br></a>
-        </p>
-</main>
+<link rel="stylesheet" href= "./css/form.css"/>
+<section>
+    <form action = "./index.php?seccion=5&accion=iniciarSesion&id=2" method = "POST">
+        <label for="usuario">
+            <input type="text" id="usuario" name="usernameCliente" placeholder="Usuario" maxlength="32" minlength="1"><br>
+        </label>
+        <label for="clave">
+            <input type="password" id="clave" name="passwordCliente" placeholder="Contraseña" maxlength="32" minlength="1"><br>
+        </label>
+        <label for="submit">
+            <input type="submit" name="botonSubmit" id="submit" value= "Iniciar Sesion">
+        </label>
+
+    <p>¿No tienes una cuenta?
+        <a href = "index.php?seccion=5&accion=registrarse&id=1" target= "_top"title = "servicios">Registrate<br></a>
+    </p>
+    </form>
+
+</section>

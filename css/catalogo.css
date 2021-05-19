@@ -1,14 +1,18 @@
+.container{
+    margin-top:10px;
+    margin-bottom: 10px;
+}
+
 .catalogo{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     align-items:flex-end;
-    margin-left: auto;
-    margin-right: auto;
 }
-.catalogo h2{
-    flex-basis: 100%;
+H2{
+    text-align: center
 }
+
 .coche{
     margin-left: auto;
     margin-right: auto;
@@ -18,7 +22,7 @@
     border-radius: 4px;
     width: fit-content;
     height: fit-content;
-    flex-basis: 10%;
+    flex-basis: 20%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -34,15 +38,18 @@
     flex-basis: 30%;
     width: fit-content;
     height: fit-content;
-    padding: 0px;
-    margin:0px 0px 0px 3px;
+    padding: 0;
+    margin-left: auto ;
+    margin-right: auto;
     float: bottom;
 }
 
-.coche h4{
-    padding: 0px;
-    margin: 0px ;
+.coche h5{
+    margin-left: auto ;
+    margin-right: auto;
+    padding: 0;
     float: bottom;
+    align-items: flex-end;
     width: fit-content;
     height: fit-content;
 }

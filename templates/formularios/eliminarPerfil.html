@@ -1,19 +1,20 @@
-<link rel="stylesheet" href= "./css/formulario.css"/>
-<main>
-        <h1>Eliminar persona</h1>
-        <p>Usuario: ##idUsuario##</p>
-        <p>Nombre: ##nombre##</p>
-        <p>Primer Apellido: ##apellidos##</p>
-        <p>Correo: ##correo##</p>
-        <p>Fecha de Nacimiento: ##fechaNacimiento##</p>
-        <p>Telefono: ##telefono##</p>
-        <p>Contraseña: ##password##</p>
-
-	¿Desea eliminar el usuario?
-        <form action="./index.php?seccion=5&accion=mostrarPerfil&id=6" method="post">
-            <label for="id">
-                <input type="hidden" name="id" id="id" value="##oidUsuarios##" ><br></label>
-            <input type="submit" name="enviar" value="Si">
+<link rel="stylesheet" href= "./css/form.css"/>
+<section>
+    <form action="./index.php?seccion=5&accion=mostrarPerfil&id=6" method="post" onsubmit="return confirmSubmit('¿Seguro quieres eliminar el usuario?');">
+    <h1>Eliminar persona</h1>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"> <h1>Mostrar persona</h1></li>
+            <li class="list-group-item"> <p>Usuario: ##idUsuario##</p></li>
+            <li class="list-group-item"> <p>Nombre: ##nombre##</p></li>
+            <li class="list-group-item"><p>Apellidos: ##apellidos##</p></li>
+            <li class="list-group-item"><p>Correo: ##correo##</p></li>
+            <li class="list-group-item"><p>Fecha de Nacimiento: ##fechaNacimiento##</p></li>
+            <li class="list-group-item"><p>Telefono: ##telefono##</p></li>
+        </ul>
+        <h4>¿Desea eliminar el usuario?</h4>
+        <input type="submit" id="submit" name="enviar" value="Si" >
+        <input type="hidden" name="id"  value="##oidUsuarios##" >
+        <button id="noEliminar"><a href="index.php?seccion=5&accion=mostrarPerfil&id=1">No</a></button>
         </form>
-    <button id="noEliminar"><a href="index.php?seccion=5&accion=mostrarPerfil&id=1">No</a></button>
-</main>
+</section>
+<script type="text/javascript" src="./js/confirmarCambios.js"></script>

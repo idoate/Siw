@@ -1,17 +1,28 @@
-<link rel="stylesheet" href= "./css/mostrarDatos.css"/>
+<style>
+li.list-inline-item{
+    margin:5px;
+    border: 1px solid rgba(0,0,0,.125);
+    margin-top:20px;
+    padding: 9px;
+    border-radius: 7px;
+}
+</style>
 <section>
-    <main>
-        <h1>Mostrar persona</h1>
-        <p>Usuario: ##idUsuario##</p>
-        <p>Nombre: ##nombre##</p>
-        <p>Apellidos: ##apellidos##</p>
-        <p>Correo: ##correo##</p>
-        <p>Fecha de Nacimiento: ##fechaNacimiento##</p>
-        <p>Telefono: ##telefono##</p>
-        <button id="cerrarSesion"><a href="index.php?seccion=5&accion=mostrarPerfil&id=2">Cerrar Sesion</a></button> 
-        <button id="modificar"><a href="index.php?seccion=5&accion=mostrarPerfil&id=3">Modificar Perfil</a></button>
-        <button id="eliminar"><a href="index.php?seccion=5&accion=mostrarPerfil&id=5">Eliminar cuenta</a></button>
-        <button id="modificarPassword"><a href="index.php?seccion=5&accion=mostrarPerfil&id=7">Cambiar Contraseña</a></button>
-
-    </main>
+    <div class="container">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><h1>Mostrar persona</h1></li>
+        <li class="list-group-item"><p>Usuario: ##idUsuario##</p></li>
+        <li class="list-group-item"><p>Nombre: ##nombre##</p></li>
+        <li class="list-group-item"><p>Apellidos: ##apellidos##</p></li>
+        <li class="list-group-item"><p>Correo: ##correo##</p></li>
+        <li class="list-group-item"><p>Fecha de Nacimiento: ##fechaNacimiento##</p></li>
+        <li class="list-group-item"><p>Telefono: ##telefono##</p></li>
+    </ul>
+    <ul class="list-inline">
+        <li class="list-inline-item"><a href="index.php?seccion=5&accion=mostrarPerfil&id=2">Cerrar Sesion</a></li>
+        <li class="list-inline-item"><a href="index.php?seccion=5&accion=mostrarPerfil&id=3">Modificar Perfil</a></li>
+        <li class="list-inline-item"><a href="index.php?seccion=5&accion=mostrarPerfil&id=5">Eliminar cuenta</a></li>
+        <li class="list-inline-item"><a href="index.php?seccion=5&accion=mostrarPerfil&id=7">Cambiar Contraseña</a></li>
+    </ul>
+    </div>
 </section>

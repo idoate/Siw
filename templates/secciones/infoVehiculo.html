@@ -1,0 +1,36 @@
+<link rel="stylesheet" href= "./css/comentarios.css">
+<link rel= "stylesheet" href="./css/infoVehiculo.css" >
+<section>
+	<div class="container">
+	    <div class="aligned">
+			<h3>##marca##</h3>
+			<h5>##modelo##</h5>
+		</div>
+			<p>##descripcion##</p>
+	    <div class="carrusel">
+			<div class="unasolafila">
+				<div class = "imagenCentral">
+					<img id = "imagenCentral" src="./uploadImages/medium/##fotoCentral## "><br>
+				</div>
+				<div class="datos2">
+					<h4>Precio</h4>
+					<p>##precio## € </p><br>
+					<h4>Propietario</h4>
+					<p>##NombrePropietario## ##ApellidosPropietario##</p><br>
+					<h4>Matricula</h4>
+					<p>##matricula##</p><br>
+				</div>
+			</div>
+			<div class = "miniaturas">
+				##fotos##
+				<img id = "imagenPequenia" src = "./uploadImages/small/##imagen## " onclick= 'cambiarImagen("./uploadImages/medium/##imagen##")'>
+				##fotos##
+			</div>
+		</div>
+	</div>
+</section>
+<script type="text/javascript">
+	function cambiarImagen(nuevaImagen) {
+		document.getElementById("imagenCentral").src=nuevaImagen;
+	}
+</script>

@@ -1,0 +1,71 @@
+
+.datos1{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items:flex-end;
+
+}
+.aligned {
+    text-align:center;
+}
+
+.aligned h3, .aligned h5 {
+    display:inline-block;
+}
+.aligned h5 {
+    margin-left: 10px;
+    display:inline-block;
+}
+
+.datos2{
+    background-color: #DFDFDF;
+    border: 2px solid black;
+    margin-left:  45px;
+    margin-bottom: 50px;
+    padding: 30px;
+
+}
+.datos2 p,h4{
+    margin:auto
+}
+.unasolafila{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items:flex-end;
+}
+
+.carrusel{
+    flex-basis: 70%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items:flex-end;
+    margin: auto;
+
+}
+.imagenCentral{
+    justify-content: left;
+    margin-bottom: 35px;
+    background: white;
+    flex-basis: 50%;
+}
+.imagenCentral img{
+    width: 900px;
+
+}
+.miniaturas{
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 35px;
+    background: white;
+    flex-basis: 100%;
+}
+.miniaturas img{
+    width: 109px;
+    height: 75px;
+}
+
+

@@ -3,7 +3,7 @@ body{
     margin: 0;
 }
 
-header{
+header.miCabecera{
     border-bottom: 3px solid black;
     padding: 8px;
     padding-top:4px;
@@ -58,7 +58,7 @@ header div#cabecera a{
     text-decoration: none;
 }
 
-header #cabecera nav{
+header #cabecera nav.miCabecera{
     margin-bottom: 5px;
     flex-basis: 100%;
     padding: 0px;
@@ -67,7 +67,7 @@ header #cabecera nav{
     align-items: flex-end;
 }
 
-header div#cabecera nav button#inicioSesion{
+header div#cabecera nav.miCabecera button#inicioSesion{
     width: fit-content;
     height: fit-content;
     margin-left: auto;

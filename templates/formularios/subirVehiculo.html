@@ -1,5 +1,5 @@
-<link rel="stylesheet" href= "./css/formulario.css"/>
-<main>
+<link href='./css/form.css' type='text/css' rel='stylesheet'>
+<section>
     <form action = "./index.php?seccion=6&accion=subirModelo&id=2" method = "POST" enctype="multipart/form-data" >
         <label for="marca">Selecciona la marca del coche<br>
             <select id="marca" name="marcaCoche">
@@ -17,7 +17,6 @@
         <label for="descripcion">Introduce la descripcion del coche<br>
             <textarea id="descripcion" name="descripcionCoche"> </textarea>
         </label><br>
-
         <label for="precio">Introduce el precio del coche<br>
             <input type="number" id="precio" name="precioCoche">
         </label><br>
@@ -25,7 +24,7 @@
            <input type="file"  id="fotoPrincipalCoche" name="fotoPrincipalCoche" accept="image/*">
         </label><br>
         <label for="submit">
-            <input type="submit" name="csv" id="submit" value= "Importar">
+            <input type="submit" name="subirCoche" id="submit" value= "Importar">
         </label>
     </form>
-</main>
+</section>

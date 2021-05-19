@@ -35,12 +35,15 @@ switch($seccion){
         else if ($accion === "masInfo"){
             switch ($id) {
                 case 1:
-                    vMostrarInfoVehiculo(mInfoVehiculo(), mComentarios(),mGetRol());//mostar comentario
+                    vMostrarInfoVehiculo(0,mInfoVehiculo(), mObtenerFotos(),mObtenerComentarios(),mGetRol());//mostar comentario
                     break;
                 case 2:
-                    $resultado = mAnandirComentario();
-                    vAnadirComentario($resultado, mInfoVehiculo(), mComentarios(),mGetRol());
+                    $resultado = mAnadirComentario();
+                    vMostrarInfoVehiculo($resultado,mInfoVehiculo(), mObtenerFotos(),mObtenerComentarios(),mGetRol());//mostar comentario
                     break;
+                case 3:
+                    $resultado = mBorrarComentario();
+                    vMostrarInfoVehiculo($resultado,mInfoVehiculo(),mObtenerFotos(),mObtenerComentarios(),mGetRol());
             }
         }
         break;
@@ -95,7 +98,6 @@ switch($seccion){
                         vMostrarHome("anonimo");
                         break;
                     }
-                    break;
                 case 7://modificar contraseña
                     vMostrarPerfil(mDatosUnaPersona(),"modificarPassword",mGetRol());
                     break;
@@ -170,15 +172,32 @@ switch($seccion){
                     vMostrarSubirModeloCoche(mSesionIniciada(),mObtenerMarcasDeCoche(),mGetRol());
                     break;
                 case 2:
-                    vMostrarResultadoSubirModeloCoche(mSubirCoche(),mGetRol());
+                    vMostrarDropzone(mSubirCoche(),mGetRol());
                     break;
                 case 3:
+                    vMostrarResultadoSubirModeloCoche(1,mGetRol());
                     break;
             }
         }
-    case 7: // Seccion Ventas
-        vMostrarVentas(mSesionIniciada(),mGetRol());
         break;
+    case 7: // Seccion Ventas
+        if($accion === "mostrar") {
+            switch ($id) {
+                case 1:
+                    vMostrarVenderCoche(mSesionIniciada(), mObtenerMarcasDeCoche(), mGetRol());
+                    break;
+            }
+        }
+        else if ($accion === "venderVehiculo"){
+            switch ($id){
+                case 1:
+                    vMostrarResultadoVenderCoche( mEnviarSolicitudVenta(), mGetRol());
+                    break;
+            }
+
+        }
+        break;
+
     case 8: // Seccion Reparacion
         vMostrarReparacion(mSesionIniciada(),mGetRol());
         break;
