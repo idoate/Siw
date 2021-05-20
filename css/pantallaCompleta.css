@@ -1,0 +1,38 @@
+body{
+    margin: 0;
+}
+.wrapper{
+    min-height: 100vh;
+    background: black;
+    display: flex;
+    flex-direction: column;
+}
+.content {
+    display: flex;
+    flex: 1;
+}
+.columns{
+    display: flex;
+    flex:1;
+}
+.main{
+    flex: 1;
+    order: 2;
+}
+
+.sidebar-first{
+    width: 10%;
+    height: 100%;
+    background-color: black;
+    order: 1;
+    color: white;
+}
+.sidebar-second{
+    width: 10%;
+    order: 3;
+    background-color: black;
+    color :white;
+}
+
+
+</style>

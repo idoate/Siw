@@ -23,11 +23,14 @@
 			</div>
 			<div class = "miniaturas">
 				##fotos##
-				<img id = "imagenPequenia" src = "./uploadImages/small/##imagen## " onclick= 'cambiarImagen("./uploadImages/medium/##imagen##")'>
+				<a class="miniatura"><img  src = "./uploadImages/small/##imagen## " onclick= 'cambiarImagen("./uploadImages/medium/##imagen##")'></a>
 				##fotos##
 			</div>
 		</div>
+		<a href="./index.php?seccion=3&accion=masInfo&id=4&matricula=##matricula##" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Pantalla Completa</a>
+		<a href="./index.php?seccion=3&accion=comprarVehiculo&id=1&matricula=##matricula##" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Solicitar compra Vehiculo</a>
 	</div>
+
 </section>
 <script type="text/javascript">
 	function cambiarImagen(nuevaImagen) {

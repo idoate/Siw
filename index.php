@@ -1,7 +1,7 @@
 <?php
 include "modelo.php";
 include "vista.php";
-function asignarValor($variable,$default){
+function asignarValor($variable,$default){//utilizamos esta funcion para no tener que escribir esas lineas de codigo cada vez que queramos obtener una variable por get o post
     if (isset ($_GET[$variable])){
         $valorVariable = $_GET[$variable];
     }
@@ -15,9 +15,9 @@ function asignarValor($variable,$default){
     }
     return $valorVariable;
 }
-$seccion = asignarValor("seccion",1);
-$accion = asignarValor("accion","");
-$id = asignarValor("id",1);
+$seccion = asignarValor("seccion",1);//estas variable nos dice en que seccion de la web estamos
+$accion = asignarValor("accion","");//esta nos dice lo que estamos haciendo en la seccion
+$id = asignarValor("id",1);//y esta nos dice en que paso de la accion estamos
 session_start();
 
 switch($seccion){
@@ -34,16 +34,33 @@ switch($seccion){
         }
         else if ($accion === "masInfo"){
             switch ($id) {
-                case 1:
-                    vMostrarInfoVehiculo(0,mInfoVehiculo(), mObtenerFotos(),mObtenerComentarios(),mGetRol());//mostar comentario
+                case 1://si el id es uno mostramos la seccion del vehiculo en concreto y ningun mensaje al usuario
+                    vMostrarInfoVehiculo(0,mInfoVehiculo(), mObtenerFotos(),mObtenerComentarios(),mGetRol());
                     break;
                 case 2:
-                    $resultado = mAnadirComentario();
-                    vMostrarInfoVehiculo($resultado,mInfoVehiculo(), mObtenerFotos(),mObtenerComentarios(),mGetRol());//mostar comentario
+                    $resultado = mAnadirComentario();//aqui acabamos de añadir un comentario y pasamos $resultado para informar al usuario si lo ha echo bien o no
+                    vMostrarInfoVehiculo($resultado,mInfoVehiculo(), mObtenerFotos(),mObtenerComentarios(),mGetRol());
                     break;
                 case 3:
-                    $resultado = mBorrarComentario();
+                    $resultado = mBorrarComentario();//aqui acabamos de borrar un comentario y pasamos $resultado para informar al usuario si lo ha echo bien o no
                     vMostrarInfoVehiculo($resultado,mInfoVehiculo(),mObtenerFotos(),mObtenerComentarios(),mGetRol());
+                    break;
+                case 4://aqui mostramos una parte del carrusel , la de pantalla completa
+                    vmostrarPantallaCompleta(mInfoVehiculo(),mObtenerFotos());
+                    break;
+            }
+        }
+        else if($accion === "comprarVehiculo"){
+            switch ($id) {
+                case 1://esta funcion se ejecuta cuando el usuario compra un vehiculo
+                    if(mGetRol() === "user"|| mGetRol() === "admin") {
+                        vMostrarResultadoCompraVehiculo(mEnviarSolicitudCompra(), mGetRol());
+                        break;
+                    }
+                    else{
+                        vMostrarRegistroCompraVehiculo(mGetRol());
+                        break;
+                    }
             }
         }
         break;
@@ -175,7 +192,7 @@ switch($seccion){
                     vMostrarDropzone(mSubirCoche(),mGetRol());
                     break;
                 case 3:
-                    vMostrarResultadoSubirModeloCoche(1,mGetRol());
+                    vMostrarResultadoSubirModeloCoche(mSubirDropzone(),mGetRol());
                     break;
             }
         }

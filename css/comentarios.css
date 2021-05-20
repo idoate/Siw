@@ -1,6 +1,3 @@
-section{
-    padding: 15px 15px 5px 10px;
-}
 .cajacomentarios{
     display: flex;
     flex-wrap:wrap ;
@@ -10,7 +7,6 @@ section{
     flex-basis: 70%;
     align-items:flex-end;
     border:1px solid green;
-    border-right: 0px;
     padding: 10px;
 }
 

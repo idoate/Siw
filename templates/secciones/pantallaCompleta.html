@@ -1,0 +1,57 @@
+<link rel="stylesheet" href= "./css/pantallaCompleta.css"/>
+<div class="wrapper">
+    <section class="content">
+        <div class="columns">
+            <div class="main"> <img id = "imagenCentral" src="./uploadImages/big/##fotoCentral## "></div>
+            <div class="sidebar-first" onclick="imagenAnterior()" ><svg xmlns="http://www.w3.org/2000/svg" width="40" height="100vh" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+            </svg></div>
+            <div class="sidebar-second" onclick="imagenSiguiente()" >
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="100vh" fill="currentColor" class="bi bi-chevron-compact-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M6.776 1.553a.5.5 0 0 1 .671.223l3 6a.5.5 0 0 1 0 .448l-3 6a.5.5 0 1 1-.894-.448L9.44 8 6.553 2.224a.5.5 0 0 1 .223-.671z"/>
+                </svg></div>
+        </div>
+    </section>
+
+</div>
+<a class="btn btn-primary btn-lg btn-block" href="index.php?seccion=3&accion=masInfo&id=1&matricula=##matricula##">Volver atras</a>
+<p id="fotos" hidden> ##fotos## ##imagen##, ##fotos## </p>
+
+<script>
+    document.getElementById("fotos");
+    imageString = document.getElementById("fotos").textContent;
+    imageString = imageString.replace(/\s+/g, '');
+    var arrayDeFotos = imageString.split(",");
+    arrayDeFotos.pop()
+    var c = new Circular(arrayDeFotos);
+
+    function Circular(arr, startIntex){
+        this.arr = arr;
+        this.currentIndex = startIntex || 0;
+    }
+
+    Circular.prototype.next = function(){
+        var i = this.currentIndex, arr = this.arr;
+        this.currentIndex = i < arr.length-1 ? i+1 : 0;
+        return this.current();
+    }
+
+    Circular.prototype.prev = function(){
+        var i = this.currentIndex, arr = this.arr;
+        this.currentIndex = i > 0 ? i-1 : arr.length-1;
+        return this.current();
+    }
+
+    Circular.prototype.current = function(){
+        return this.arr[this.currentIndex];
+    }
+    function imagenAnterior(){
+       var nuevaImagen = c.prev();
+        document.getElementById("imagenCentral").src="./uploadImages/big/"+nuevaImagen;
+    }
+    function imagenSiguiente(){
+        var nuevaImagen = c.next();
+        document.getElementById("imagenCentral").src="./uploadImages/big/"+nuevaImagen;
+    }
+
+</script>

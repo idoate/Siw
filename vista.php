@@ -112,7 +112,7 @@ function vMostrarInfoVehiculo($resultado, $resultadoObtenerVehiculo, $obtenerFot
             $introducirComentario = str_replace("##oidUsuario##",$_SESSION["id"],$introducirComentario);
         }
         else{
-            $introducirComentario = "<p></t> Si deseas introducir comentarios inicia sesion o registrate </br></p>";
+            $introducirComentario = file_get_contents("./templates/buttons/loginComentar.html");
         }
         $cajaComentario = file_get_contents("./templates/secciones/cajaComentarios.html");
         $trozos = explode("##comentario##",$cajaComentario);
@@ -133,23 +133,23 @@ function vMostrarInfoVehiculo($resultado, $resultadoObtenerVehiculo, $obtenerFot
         if ($cjtoComentarios === ""){
             $cjtoComentarios = "<p>No hay comentarios.</p>";
         }
-        $cajaComentario = $trozos[0].$cjtoComentarios.$trozos[2];
+        $cajaComentario = $trozos[0].$introducirComentario.$cjtoComentarios.$trozos[2];
         if ($resultado === 1){
             $userAlert = file_get_contents("./templates/userAlert/succes.html");
             $userAlert = str_replace("##mensaje##","Enhorabuena, tu comentario se ha publicado correctamente", $userAlert);
-            $page = $slices[0] .$cabecera.$userAlert .$infoVehiculo.$introducirComentario.$cajaComentario .$slices[1];
+            $page = $slices[0] .$cabecera.$userAlert .$infoVehiculo.$cajaComentario.$slices[1];
             $page = str_replace("##TITLE##","Informacion",$page);
             echo($page);
         }
         else if ($resultado === 2){
             $userAlert = file_get_contents("./templates/userAlert/succes.html");
             $userAlert = str_replace("##mensaje##","Enhorabuena, has borrado el comentario correctamente", $userAlert);
-            $page = $slices[0] .$cabecera.$userAlert .$infoVehiculo.$introducirComentario.$cajaComentario .$slices[1];
+            $page = $slices[0] .$cabecera.$userAlert .$infoVehiculo.$cajaComentario .$slices[1];
             $page = str_replace("##TITLE##","Informacion",$page);
             echo($page);
         }
         else if($resultado === 0){
-            $page = $slices[0] .$cabecera .$infoVehiculo.$introducirComentario.$cajaComentario .$slices[1];
+            $page = $slices[0] .$cabecera .$infoVehiculo.$cajaComentario .$slices[1];
             $page = str_replace("##TITLE##","Informacion",$page);
             echo($page);
         }
@@ -164,11 +164,30 @@ function vMostrarInfoVehiculo($resultado, $resultadoObtenerVehiculo, $obtenerFot
 
             }
 
-            $page = $slices[0] .$cabecera.$userAlert .$infoVehiculo.$introducirComentario.$cajaComentario .$slices[1];
+            $page = $slices[0] .$cabecera.$userAlert .$infoVehiculo.$cajaComentario .$slices[1];
             $page = str_replace("##TITLE##","Informacion",$page);
             echo($page);
         }
     }
+}
+function vmostrarPantallaCompleta($resultadoObtenerVehiculo,$obtenerFotos){
+    $page = file_get_contents("./templates/default_template.html");
+    $slices = explode("##CONTENT##", $page);
+    $pantallaCompleta = file_get_contents("./templates/secciones/pantallaCompleta.html");
+    $datos = $resultadoObtenerVehiculo->fetch_assoc();
+    $pantallaCompleta = str_replace("##matricula##",$datos["matricula"],$pantallaCompleta);
+    $pantallaCompleta= str_replace("##fotoCentral##",$datos["foto"],$pantallaCompleta);
+    $trozos = explode("##fotos##",$pantallaCompleta);
+    $fotosCarrusel = "";
+    while($fotos = $obtenerFotos->fetch_assoc()){
+        $imagen= $trozos[1];
+        $imagen = str_replace("##imagen##",$fotos["imagen"],$imagen);
+        $fotosCarrusel= $fotosCarrusel.$imagen;
+    }
+    $pantallaCompleta = $trozos[0].$fotosCarrusel.$trozos[2];
+    $page = $slices[0].$pantallaCompleta.$slices[1];
+    echo($page);
+
 }
 function vMostrarServicios($rolUsuario)
 {
@@ -604,7 +623,7 @@ function vMostrarResultadoSubirModeloCoche($resultado,$rolUsuario)
     $cabecera = obtenerCabecera($rolUsuario);
     $slices = explode("##CONTENT##", $page);
 
-    if ($resultado == 1) {  // correcto;
+    if ($resultado === 1) {  // correcto;
         $seccion = file_get_contents("./templates/secciones/admin.html");
         $userAlert = file_get_contents("./templates/userAlert/succes.html");
         $userAlert = str_replace("##mensaje##", "Ha subido el modelo del coche con exito", $userAlert);
@@ -619,8 +638,9 @@ function vMostrarResultadoSubirModeloCoche($resultado,$rolUsuario)
 }
 function vMostrarDropzone($resultado,$rolUsuario){
     $page = file_get_contents("./templates/default_template.html");
-    if ($resultado ===1 && $rolUsuario === "admin"){
-        $seccion = file_get_contents("./templates/formularios/dropzone.html");
+    if ($resultado===1 && $rolUsuario === "admin"){
+        $seccion = file_get_contents("./templates/enlaces/dropzone.html");
+        $seccion = str_replace("##matricula##",$resultado,$seccion);
         $page = str_replace("##TITLE##","Administrador",$page);
         $cabecera = obtenerCabecera($rolUsuario);
         $slices = explode("##CONTENT##", $page);
@@ -629,6 +649,7 @@ function vMostrarDropzone($resultado,$rolUsuario){
 
     }
     else{
+        echo("voy aqui");
         vMostrarHome($rolUsuario);
     }
 
@@ -672,7 +693,6 @@ function vMostrarListadoPersonas($resultado, $sesionIniciada, $rolUsuario){
 }
 function vMostrarResultadoVenderCoche($resultadoMail,$rolUsuario){
     {
-
         $page = file_get_contents("./templates/default_template.html");
         $page = str_replace("##TITLE##","Wildmotors",$page);
         $cabecera = obtenerCabecera($rolUsuario);
@@ -681,7 +701,7 @@ function vMostrarResultadoVenderCoche($resultadoMail,$rolUsuario){
         if ($resultadoMail == 1) {  // correcto;
             $seccion = file_get_contents("./templates/secciones/home.html");
             $userAlert = file_get_contents("./templates/userAlert/succes.html");
-            $userAlert = str_replace("##mensaje##", "Se ha enviado su solicitud al correo de wildMotors , en breves recibira una respuesta para anunciar su coche en nuestra web", $userAlert);
+            $userAlert = str_replace("##mensaje##", "Se ha enviado la solicitud de venta.<br>Te hemos enviado una copia, si no aparece  revisa la bandeja spam del correo vinculado a tu cuenta.<br> En en breves recibira una respuesta para anunciar su coche en nuestra web", $userAlert);
         }
         else{
             $userAlert = file_get_contents("./templates/userAlert/error.html");
@@ -692,5 +712,39 @@ function vMostrarResultadoVenderCoche($resultadoMail,$rolUsuario){
         echo($page);
     }
 
+}
+function vMostrarResultadoCompraVehiculo($resultadoMail,$rolUsuario){
+    {
+        $page = file_get_contents("./templates/default_template.html");
+        $page = str_replace("##TITLE##","Wildmotors",$page);
+        $cabecera = obtenerCabecera($rolUsuario);
+        $slices = explode("##CONTENT##", $page);
+
+        if ($resultadoMail == 1) {  // correcto;
+            $seccion = file_get_contents("./templates/secciones/home.html");
+            $userAlert = file_get_contents("./templates/userAlert/succes.html");
+            $userAlert = str_replace("##mensaje##", "Se ha enviado la solicitud de compra. <br> Te hemos enviado una copia, si no aparece  revisa la bandeja spam del correo vinculado a tu cuenta.", $userAlert);
+        }
+        else{
+            $userAlert = file_get_contents("./templates/userAlert/error.html");
+            $seccion = file_get_contents("./templates/secciones/home.html");
+            $userAlert = str_replace("##mensaje##", "Ha habido un fallo durante la solicitud, por favor intentelo mas tarde.", $userAlert);
+        }
+        $page = $slices[0] .$cabecera.$userAlert .$seccion.$slices[1];
+        echo($page);
+    }
+
+
+}
+function vMostrarRegistroCompraVehiculo($rolUsuario){
+    $page = file_get_contents("./templates/default_template.html");
+    $page = str_replace("##TITLE##","Iniciar Sesion",$page);
+    $cabecera = obtenerCabecera($rolUsuario);
+    $seccion = file_get_contents("./templates/formularios/iniciarSesion.html");
+    $slices = explode("##CONTENT##", $page);;
+    $userAlert = file_get_contents("./templates/userAlert/error.html");
+    $userAlert = str_replace("##mensaje##", "Para comprar un vehiculo debes iniciar sesion o registrarte,realice este paso e intentelo mas tarde.", $userAlert);
+    $page = $slices[0] . $cabecera .$userAlert. $seccion . $slices[1];
+    echo($page);
 }
 /***********************Acciones Administrador**************************/
