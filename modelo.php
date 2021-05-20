@@ -33,7 +33,7 @@ function mCreaConexionbd()
 {
     $db_host = 'localhost';
     $db_user = 'root';
-    $db_password = "root";
+    $db_password = "";
     $db_db = "db_grupo33";
     /*
     $db_host = "dbserver";
@@ -465,7 +465,7 @@ function mEnviarSolicitudVenta(){
 
         if(mail($para, $titulo, $mensaje, $cabeceras)){
             $mensajeuser = 'Has realizado tu solicitud para subir el vehiculo correctamente'."\r\n".$mensaje;
-             $para = $datos["correo"]xww;
+             $para = $datos["correo"];
             if( mail($para, $titulo, $mensajeuser, $cabeceras)) {
                return 1;
            }
