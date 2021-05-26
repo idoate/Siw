@@ -1,25 +1,25 @@
 <link rel="stylesheet" href= "./css/form.css"/>
-<section>
+<div class="background">
     <div class="container">
         <form action="./index.php?seccion=5&accion=mostrarPerfil&id=4" method="post" onsubmit="return confirmSubmit('¿Seguro que quieres cambiar los datos?');">
             <h1>Modificacion de persona</h1>
-            <label for="usuario">Usuario: ##idUsuario##
-            <input type="hidden" name="usuario" id="usuario" value="##idUsuario##" ><br></label>
+            <label for="usuario">Usuario: ##idUsuario##</label>
+            <input type="hidden" name="usuario" id="usuario" value="##idUsuario##" ><br>
 
-            <label for="nombre">Nombre:
-            <input type="text" name="nombre" id="nombre" value="##nombre##"maxlength="32" minlength="1"required><br> </label>
+            <label for="nombre">Nombre: </label>
+            <input type="text" name="nombre" id="nombre" value="##nombre##"maxlength="32" minlength="1"required><br>
 
-            <label for="apellidos">Apellidos:
-            <input type="text" name="apellidos" id="apellidos" value="##apellidos##"maxlength="64" minlength="1"required><br></label>
+            <label for="apellidos">Apellidos:</label>
+            <input type="text" name="apellidos" id="apellidos" value="##apellidos##"maxlength="64" minlength="1"required><br>
 
-            <label for="correo">Correo:
-            <input type="mail" name="correo" id="correo" value="##correo##"><br> </label>
+            <label for="correo">Correo:</label>
+            <input type="mail" name="correo" id="correo" value="##correo##"><br>
 
-            <label for="fechaNacimiento">Fecha de nacimiento:
-            <input type="mail" name="fechaNacimiento" id="fechaNacimiento" value="##fechaNacimiento##"><br> </label>
+            <label for="fechaNacimiento">Fecha de nacimiento:</label>
+            <input type="mail" name="fechaNacimiento" id="fechaNacimiento" value="##fechaNacimiento##"><br>
 
-            <label for="telefono">Telefono:
-            <input type="number" name="telefono" id="telefono" value="##telefono##"><br> </label>
+            <label for="telefono">Telefono:</label>
+            <input type="number" name="telefono" id="telefono" value="##telefono##"><br>
 
             <input type="submit" name="enviar" value="Enviar modificacion">
             <label  for="rol">
@@ -32,6 +32,6 @@
             <button><a href="index.php?seccion=5&accion=mostrarPerfil&id=1">Volver</a></button>
         </form>
     </div>
-</section>
+</div>
 <script type="text/javascript" src="./js/confirmarCambios.js"></script>
 

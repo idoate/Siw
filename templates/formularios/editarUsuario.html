@@ -1,9 +1,14 @@
 <link rel="stylesheet" href= "./css/form.css"/>
-<form action = "./index.php?seccion=6&accion=editarUsuario&id=2" method = "POST">
-    <label for="usuario">Introduce el nombre del usuario que quieres modificar
-        <input type="text" id="usuario" name="usernameCliente" placeholder="Usuario" maxlength="32" minlength="1"><br>
-    </label>
-    <label for="submit">
-        <input type="submit" name="botonSubmit" id="submit" value= "SeleccionarUsuario" >
-    </label>
-</form>
+<div class="background">
+    <div class="container">
+        <form action = "./index.php?seccion=6&accion=editarUsuario&id=2" method = "POST">
+            <h1>Editar Usuario</h1>
+            <label for="usuario">Introduce el nombre del usuario que quieres modificar
+                <input type="text" id="usuario" name="usernameCliente" placeholder="Usuario" maxlength="32" minlength="1"><br>
+            </label>
+            <label for="submit">
+                <input type="submit" name="botonSubmit" id="submit" value= "SeleccionarUsuario" >
+            </label>
+        </form>
+    </div>
+</div>

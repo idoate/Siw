@@ -66,7 +66,7 @@ function mCreaConexionbd()
 {
     $db_host = 'localhost';
     $db_user = 'root';
-    $db_password = "";
+    $db_password = "root";
     $db_db = "db_grupo33";
     /*
     $db_host = "dbserver";

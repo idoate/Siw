@@ -1,0 +1,22 @@
+html,body{
+    width: 100%;
+    height: 100%;
+
+}
+div.background{
+    background-image: url(../img/adminSection.jpg);
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding-top:7%;
+    padding-bottom:7% ;
+}
+
+div.background h1{
+    color:#f7fcfe
+}
+
+body{
+    background-image: none;
+}

@@ -1,20 +1,22 @@
 <link rel="stylesheet" href= "./css/form.css"/>
-<section>
-    <form action="./index.php?seccion=5&accion=mostrarPerfil&id=6" method="post" onsubmit="return confirmSubmit('¿Seguro quieres eliminar el usuario?');">
-    <h1>Eliminar persona</h1>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item"> <h1>Mostrar persona</h1></li>
-            <li class="list-group-item"> <p>Usuario: ##idUsuario##</p></li>
-            <li class="list-group-item"> <p>Nombre: ##nombre##</p></li>
-            <li class="list-group-item"><p>Apellidos: ##apellidos##</p></li>
-            <li class="list-group-item"><p>Correo: ##correo##</p></li>
-            <li class="list-group-item"><p>Fecha de Nacimiento: ##fechaNacimiento##</p></li>
-            <li class="list-group-item"><p>Telefono: ##telefono##</p></li>
-        </ul>
-        <h4>¿Desea eliminar el usuario?</h4>
-        <input type="submit" id="submit" name="enviar" value="Si" >
-        <input type="hidden" name="id"  value="##oidUsuarios##" >
-        <button id="noEliminar"><a href="index.php?seccion=5&accion=mostrarPerfil&id=1">No</a></button>
+<div class="background">
+    <div class="container">
+        <form action="./index.php?seccion=5&accion=mostrarPerfil&id=6" method="post" onsubmit="return confirmSubmit('¿Seguro quieres eliminar el usuario?');">
+            <h1>Eliminar persona</h1>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"> <p>Usuario: ##idUsuario##</p></li>
+                <li class="list-group-item"> <p>Nombre: ##nombre##</p></li>
+                <li class="list-group-item"><p>Apellidos: ##apellidos##</p></li>
+                <li class="list-group-item"><p>Correo: ##correo##</p></li>
+                <li class="list-group-item"><p>Fecha de Nacimiento: ##fechaNacimiento##</p></li>
+                <li class="list-group-item"><p>Telefono: ##telefono##</p></li>
+            </ul>
+                <h4>¿Desea eliminar el usuario?</h4>
+            <input type="submit" id="submit" name="enviar" value="Si" >
+            <input type="hidden" name="id"  value="##oidUsuarios##" >
+            <button id="noEliminar"><a href="index.php?seccion=5&accion=mostrarPerfil&id=1">No</a></button>
         </form>
-</section>
+    </div>
+</div>
+
 <script type="text/javascript" src="./js/confirmarCambios.js"></script>
